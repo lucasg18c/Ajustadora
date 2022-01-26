@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/menuFragment">
+
+    <fragment
+        android:id="@+id/formaFuncionFragment"
+        android:name="com.slavik.aproximadorfunciones.interfaz.fragments.FormaFuncionFragment"
+        android:label="fragment_forma_funcion"
+        tools:layout="@layout/fragment_forma_funcion" >
+        <action
+            android:id="@+id/action_formaFuncionFragment_to_resultadoFragment"
+            app:destination="@id/resultadoFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="com.slavik.aproximadorfunciones.interfaz.fragments.MenuFragment"
+        android:label="fragment_menu"
+        tools:layout="@layout/fragment_menu" >
+        <action
+            android:id="@+id/action_menuFragment_to_tutorialFragment"
+            app:destination="@id/tutorialFragment"
+            app:enterAnim="@anim/from_up"
+            app:exitAnim="@anim/to_down"
+            app:popEnterAnim="@anim/from_down"
+            app:popExitAnim="@anim/to_up" />
+        <action
+            android:id="@+id/action_menuFragment_to_puntosFragment"
+            app:destination="@id/puntosFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/puntosFragment"
+        android:name="com.slavik.aproximadorfunciones.interfaz.fragments.PuntosFragment"
+        android:label="fragment_puntos"
+        tools:layout="@layout/fragment_puntos" >
+        <action
+            android:id="@+id/action_puntosFragment_to_formaFuncionFragment"
+            app:destination="@id/formaFuncionFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/resultadoFragment"
+        android:name="com.slavik.aproximadorfunciones.interfaz.fragments.ResultadoFragment"
+        android:label="fragment_resultado"
+        tools:layout="@layout/fragment_resultado" />
+    <fragment
+        android:id="@+id/tutorialFragment"
+        android:name="com.slavik.aproximadorfunciones.interfaz.fragments.TutorialFragment"
+        android:label="fragment_tutorial"
+        tools:layout="@layout/fragment_tutorial" />
+</navigation>
