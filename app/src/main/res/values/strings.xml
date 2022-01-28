@@ -64,10 +64,11 @@
     <string name="id_banner_menu">ca-app-pub-3940256099942544/6300978111</string>
     <!--    <string name="id_banner_menu">ca-app-pub-8058093585220532/3121903461</string>-->
     <string name="id_rewarded_auto">ca-app-pub-3940256099942544/5224354917</string>
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="titulo_resultado">Resultado</string>
     <string name="titulo_tutorial">Guia de usuario</string>
+    <string name="title_activity_main">MainActivity</string>
     <!--    <string name="id_rewarded_auto">ca-app-pub-8058093585220532/2717313433</string>-->
 
 </resources>

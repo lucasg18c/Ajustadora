@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/Lucas/Desktop/Proyectos/Ajustadora/app/src/main/res/drawable/btn_round.xml" value="0.195" />
+        <entry key="..\:/Users/Lucas/Desktop/Proyectos/Ajustadora/app/src/main/res/layout/fragment_forma_funcion.xml" value="0.18697916666666667" />
+      </map>
+    </option>
+  </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="org.jetbrains.annotations.Nullable" />
     <option name="myDefaultNotNull" value="androidx.annotation.RecentlyNonNull" />
