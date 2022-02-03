@@ -3,6 +3,7 @@ package com.slavik.aproximadorfunciones.mmc.modelo
 import com.slavik.aproximadorfunciones.mmc.modelo.funciones.Funcion
 import com.slavik.aproximadorfunciones.mmc.modelo.funciones.Lineal
 import com.slavik.aproximadorfunciones.mmc.util.Formato
+import com.slavik.aproximadorfunciones.mmc.util.Formato.round
 import java.util.*
 
 class ModeloAjuste(
@@ -40,5 +41,9 @@ class ModeloAjuste(
 
     fun resolver() {
         funcion.resolver(puntos)
+    }
+
+    fun getError() : String {
+        return Formato.decimal(funcion.error)
     }
 }

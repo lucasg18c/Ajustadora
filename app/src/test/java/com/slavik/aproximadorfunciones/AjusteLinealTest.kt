@@ -20,11 +20,6 @@ class AjusteLinealTest {
         )
 
         Assert.assertEquals(
-            "y = 1 x + 0",
-            funcion.getFormula()
-        )
-
-        Assert.assertEquals(
             0.0,
             funcion.error,
             0.01
@@ -45,11 +40,6 @@ class AjusteLinealTest {
         )
 
         Assert.assertEquals(
-            "y = 1,5 x + -0,5",
-            funcion.getFormula()
-        )
-
-        Assert.assertEquals(
             2.0,
             funcion.error,
             0.01
@@ -65,11 +55,6 @@ class AjusteLinealTest {
             listOf(
                 Punto(1, 1)
             )
-        )
-
-        Assert.assertEquals(
-            "y = 1 x + 0",
-            funcion.getFormula()
         )
 
         Assert.assertEquals(
@@ -92,11 +77,6 @@ class AjusteLinealTest {
         )
 
         Assert.assertEquals(
-            "y = 1 x + 0",
-            funcion.getFormula()
-        )
-
-        Assert.assertEquals(
             0.0,
             funcion.error,
             0.01
@@ -116,11 +96,6 @@ class AjusteLinealTest {
         )
 
         Assert.assertEquals(
-            "y = 0 x + 1",
-            funcion.getFormula()
-        )
-
-        Assert.assertEquals(
             0.0,
             funcion.error,
             0.01
@@ -137,11 +112,6 @@ class AjusteLinealTest {
                 Punto(1, 2),
                 Punto(1, 0),
             )
-        )
-
-        Assert.assertEquals(
-            "y = 0 x + 1",
-            funcion.getFormula()
         )
 
         Assert.assertEquals(
@@ -165,11 +135,6 @@ class AjusteLinealTest {
                 Punto(4.0, 1.5),
                 Punto(5.0, 1.5)
             )
-        )
-
-        Assert.assertEquals(
-            "y = 0 x + 1,5",
-            funcion.getFormula()
         )
 
         Assert.assertEquals(

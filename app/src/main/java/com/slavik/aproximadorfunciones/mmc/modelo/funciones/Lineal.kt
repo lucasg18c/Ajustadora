@@ -3,6 +3,8 @@ package com.slavik.aproximadorfunciones.mmc.modelo.funciones
 import com.slavik.aproximadorfunciones.mmc.modelo.Punto
 import com.slavik.aproximadorfunciones.mmc.modelo.SEL
 import com.slavik.aproximadorfunciones.mmc.util.Formato
+import com.slavik.aproximadorfunciones.mmc.util.Formato.round
+import kotlin.math.abs
 
 class Lineal : Funcion() {
     companion object {
@@ -17,10 +19,31 @@ class Lineal : Funcion() {
     }
 
     override fun getFormula(): String {
-        return coeficientes?.let { c ->
-            "y = ${Formato.decimal(c[0])} x + ${Formato.decimal(c[1])}"
+        if (coeficientes == null) return "y = a x + b"
 
-        } ?: "y = ax + b"
+        val a = coeficientes!![0].round(2)
+        val b = coeficientes!![1].round(2)
+        var formula = "y = "
+
+        when {
+            a == -1.0 -> formula += "- x"
+            a == 1.0 -> formula += "x"
+            a < 0 -> formula += "- ${Formato.coeficiente(a)} x"
+            a > 0 -> formula += "${Formato.coeficiente(a)} x"
+        }
+
+        when {
+            a == 0.0 -> when {
+                b == 0.0 -> formula += "0"
+                b < 0.0 -> formula += "- ${Formato.coeficiente(b)}"
+                b > 0.0 -> formula += Formato.coeficiente(b)
+            }
+            a != 0.0 -> when {
+                b < 0.0 -> formula += " - ${Formato.coeficiente(b)}"
+                b > 0.0 -> formula += " + ${Formato.coeficiente(b)}"
+            }
+        }
+        return formula
     }
 
     override fun prepararPuntos(puntos: MutableList<Punto>): MutableList<Punto> {

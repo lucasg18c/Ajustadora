@@ -50,5 +50,11 @@ abstract class Funcion {
         for (punto in puntos) {
             error += (punto.y - valuar(punto.x)).pow(2)
         }
+
+        error /= puntos.size
+    }
+
+    fun setCoeficientes(vararg coeficientes: Int) {
+        this.coeficientes = coeficientes.asList().map { it.toDouble() }
     }
 }

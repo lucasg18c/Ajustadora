@@ -192,7 +192,7 @@ private fun Contenido(
                             textAlign = TextAlign.Center
                         )
                         Text(
-                            text = "Error: ${modelo.funcion.error}",
+                            text = "Error: ${modelo.getError()}",
                             fontSize = 20.sp,
                             textAlign = TextAlign.Center
                         )

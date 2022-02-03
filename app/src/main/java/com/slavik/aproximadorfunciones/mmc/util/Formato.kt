@@ -2,6 +2,7 @@ package com.slavik.aproximadorfunciones.mmc.util
 
 import java.text.DecimalFormat
 import java.util.*
+import kotlin.math.abs
 
 object Formato {
 
@@ -37,5 +38,15 @@ object Formato {
         } catch (e: NumberFormatException) {
             Double.NaN
         }
+    }
+
+    fun Double.round(decimals: Int): Double {
+        var multiplier = 1.0
+        repeat(decimals) { multiplier *= 10 }
+        return kotlin.math.round(this * multiplier) / multiplier
+    }
+
+    fun coeficiente(coeficiente: Double): String {
+        return decimal(abs(coeficiente))
     }
 }

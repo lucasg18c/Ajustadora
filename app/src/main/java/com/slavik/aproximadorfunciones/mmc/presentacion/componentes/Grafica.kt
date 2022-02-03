@@ -36,6 +36,7 @@ fun Grafica(
             view.apply {
                 series.clear()
 
+                // todo no grafica constantes
                 addSeries(
                     PointsGraphSeries<DataPoint>().apply {
                         modelo.puntos
@@ -133,7 +134,6 @@ fun Grafica(
         },
         modifier = modifier
     )
-
 }
 
 @Composable
