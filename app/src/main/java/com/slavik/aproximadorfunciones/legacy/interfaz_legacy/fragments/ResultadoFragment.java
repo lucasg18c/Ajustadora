@@ -1,4 +1,4 @@
-package com.slavik.aproximadorfunciones.interfaz.fragments;
+package com.slavik.aproximadorfunciones.legacy.interfaz_legacy.fragments;
 
 import android.graphics.Color;
 import android.text.Spanned;
@@ -9,10 +9,10 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.PointsGraphSeries;
 import com.slavik.aproximadorfunciones.R;
-import com.slavik.aproximadorfunciones.modelo.DatosGlobales;
-import com.slavik.aproximadorfunciones.modelo.Punto;
-import com.slavik.aproximadorfunciones.modelo.funciones.Funcion;
-import com.slavik.aproximadorfunciones.modelo.funciones.Parabola;
+import com.slavik.aproximadorfunciones.legacy.modelo_legacy.DatosGlobales;
+import com.slavik.aproximadorfunciones.legacy.modelo_legacy.Punto;
+import com.slavik.aproximadorfunciones.legacy.modelo_legacy.funciones.Funcion;
+import com.slavik.aproximadorfunciones.legacy.modelo_legacy.funciones.Parabola;
 
 import org.sufficientlysecure.htmltextview.HtmlFormatter;
 import org.sufficientlysecure.htmltextview.HtmlFormatterBuilder;

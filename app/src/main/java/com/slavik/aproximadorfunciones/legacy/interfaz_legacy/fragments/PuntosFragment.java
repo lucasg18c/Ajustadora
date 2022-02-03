@@ -1,4 +1,4 @@
-package com.slavik.aproximadorfunciones.interfaz.fragments;
+package com.slavik.aproximadorfunciones.legacy.interfaz_legacy.fragments;
 
 import android.annotation.SuppressLint;
 import android.view.View;
@@ -8,8 +8,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.slavik.aproximadorfunciones.R;
-import com.slavik.aproximadorfunciones.modelo.DatosGlobales;
-import com.slavik.aproximadorfunciones.modelo.Punto;
+import com.slavik.aproximadorfunciones.legacy.modelo_legacy.DatosGlobales;
+import com.slavik.aproximadorfunciones.legacy.modelo_legacy.Punto;
 
 public class PuntosFragment extends BaseFragment {
 

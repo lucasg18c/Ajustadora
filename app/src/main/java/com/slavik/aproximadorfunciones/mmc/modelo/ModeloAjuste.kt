@@ -46,4 +46,17 @@ class ModeloAjuste(
     fun getError() : String {
         return Formato.decimal(funcion.error)
     }
+
+    companion object {
+        private var modeloActual: ModeloAjuste? = null
+
+        fun getInstance() : ModeloAjuste {
+            if (modeloActual == null) modeloActual = ModeloAjuste()
+            return modeloActual!!
+        }
+
+        fun resetInstance() {
+            modeloActual = null
+        }
+    }
 }

@@ -1,4 +1,4 @@
-package com.slavik.aproximadorfunciones.interfaz;
+package com.slavik.aproximadorfunciones.legacy.interfaz_legacy;
 
 import android.os.Bundle;
 

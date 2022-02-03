@@ -33,11 +33,10 @@ class SEL(
                 for (fila in col + 1 until m) {
                     if (sel[fila][col] == 0.0) continue
 
-                    f = fila - 1
-                    v = -sel[fila][col]/sel[f][col]
+                    v = -sel[fila][col]/sel[col][col]
 
                     for (k in col until n) {
-                        sel[fila][k] += sel[f][k] * v
+                        sel[fila][k] += sel[col][k] * v
                     }
                 }
             }

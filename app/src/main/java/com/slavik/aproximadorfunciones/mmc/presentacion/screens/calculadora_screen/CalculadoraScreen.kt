@@ -54,6 +54,7 @@ fun CalculadoraScreen(
     val scrollState = rememberScrollState()
 
     LaunchedEffect(key1 = true) {
+        vm.cambioModelo()
         vm.eventoUI.collect {
             when (it) {
                 is EventoUI.Snackbar -> {
@@ -144,7 +145,7 @@ private fun Contenido(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Image(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_lineal),
+                        imageVector = ImageVector.vectorResource(id = modelo.funcion.imagen),
                         contentDescription = "Forma de la función",
                         modifier = Modifier
                             .width(30.dp)

@@ -1,4 +1,4 @@
-package com.slavik.aproximadorfunciones.interfaz.fragments;
+package com.slavik.aproximadorfunciones.legacy.interfaz_legacy.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

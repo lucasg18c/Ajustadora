@@ -1,17 +1,13 @@
-package com.slavik.aproximadorfunciones.interfaz.fragments;
+package com.slavik.aproximadorfunciones.legacy.interfaz_legacy.fragments;
 
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.slavik.aproximadorfunciones.R;
-import com.slavik.aproximadorfunciones.modelo.DatosGlobales;
+import com.slavik.aproximadorfunciones.legacy.modelo_legacy.DatosGlobales;
 
 public class FormaFuncionFragment extends BaseFragment {
 

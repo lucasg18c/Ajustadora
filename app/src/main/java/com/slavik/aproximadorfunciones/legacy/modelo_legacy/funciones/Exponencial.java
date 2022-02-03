@@ -1,6 +1,6 @@
-package com.slavik.aproximadorfunciones.modelo.funciones;
+package com.slavik.aproximadorfunciones.legacy.modelo_legacy.funciones;
 
-import com.slavik.aproximadorfunciones.modelo.Punto;
+import com.slavik.aproximadorfunciones.legacy.modelo_legacy.Punto;
 
 public class Exponencial extends Funcion {
     public Exponencial() {

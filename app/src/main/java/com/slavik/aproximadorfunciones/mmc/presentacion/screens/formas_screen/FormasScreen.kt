@@ -9,24 +9,40 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.slavik.aproximadorfunciones.R
+import com.slavik.aproximadorfunciones.mmc.modelo.funciones.*
 import com.slavik.aproximadorfunciones.mmc.presentacion.componentes.TopBar
+import com.slavik.aproximadorfunciones.mmc.util.EventoUI
+import kotlinx.coroutines.flow.collect
 
 @Composable
 fun FormasScreen(
-    volver: () -> Unit
+    volver: () -> Unit,
+    vm: FormasVM = viewModel()
 ) {
     val scaffoldState = rememberScaffoldState()
 
+    LaunchedEffect(key1 = true) {
+        vm.evento.collect {
+            when (it) {
+                is EventoUI.Volver -> volver()
+                else -> Unit
+            }
+        }
+    }
+
     FormasScreenContenido(
         volver = volver,
-        scaffoldState = scaffoldState
+        scaffoldState = scaffoldState,
+        vm::formaElegida
     )
 
 }
@@ -34,7 +50,8 @@ fun FormasScreen(
 @Composable
 private fun FormasScreenContenido(
     volver: () -> Unit,
-    scaffoldState: ScaffoldState
+    scaffoldState: ScaffoldState,
+    formaElegida: (Funcion) -> Unit
 ) {
 
     Scaffold(
@@ -67,7 +84,7 @@ private fun FormasScreenContenido(
                         .fillMaxWidth()
                         .weight(1F)
                         .clickable {
-                            volver()
+                            formaElegida(Lineal())
                         }
                 ) {
                     Image(
@@ -91,7 +108,7 @@ private fun FormasScreenContenido(
                         .fillMaxWidth()
                         .weight(1F)
                         .clickable {
-                            volver()
+                            formaElegida(Parabola())
                         }
                 ) {
                     Image(
@@ -120,7 +137,7 @@ private fun FormasScreenContenido(
                         .fillMaxWidth()
                         .weight(1F)
                         .clickable {
-                            volver()
+                            formaElegida(Exponencial())
                         }
                 ) {
                     Image(
@@ -144,7 +161,7 @@ private fun FormasScreenContenido(
                         .fillMaxWidth()
                         .weight(1F)
                         .clickable {
-                            volver()
+                            formaElegida(Logaritmica())
                         }
                 ) {
                     Image(
@@ -191,6 +208,7 @@ private fun FormasScreenContenido(
 fun Prev() {
     FormasScreenContenido(
         volver = { /*TODO*/ },
-        scaffoldState = rememberScaffoldState()
+        scaffoldState = rememberScaffoldState(),
+        {}
     )
 }

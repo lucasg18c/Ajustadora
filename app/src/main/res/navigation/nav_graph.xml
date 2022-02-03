@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/formaFuncionFragment"
-        android:name="com.slavik.aproximadorfunciones.interfaz.fragments.FormaFuncionFragment"
+        android:name="com.slavik.aproximadorfunciones.legacy.interfaz_legacy.fragments.FormaFuncionFragment"
         android:label="fragment_forma_funcion"
         tools:layout="@layout/fragment_forma_funcion" >
         <action
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/menuFragment"
-        android:name="com.slavik.aproximadorfunciones.interfaz.fragments.MenuFragment"
+        android:name="com.slavik.aproximadorfunciones.legacy.interfaz_legacy.fragments.MenuFragment"
         android:label="fragment_menu"
         tools:layout="@layout/fragment_menu" >
         <action
@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/puntosFragment"
-        android:name="com.slavik.aproximadorfunciones.interfaz.fragments.PuntosFragment"
+        android:name="com.slavik.aproximadorfunciones.legacy.interfaz_legacy.fragments.PuntosFragment"
         android:label="fragment_puntos"
         tools:layout="@layout/fragment_puntos" >
         <action
@@ -53,12 +53,12 @@
     </fragment>
     <fragment
         android:id="@+id/resultadoFragment"
-        android:name="com.slavik.aproximadorfunciones.interfaz.fragments.ResultadoFragment"
+        android:name="com.slavik.aproximadorfunciones.legacy.interfaz_legacy.fragments.ResultadoFragment"
         android:label="fragment_resultado"
         tools:layout="@layout/fragment_resultado" />
     <fragment
         android:id="@+id/tutorialFragment"
-        android:name="com.slavik.aproximadorfunciones.interfaz.fragments.TutorialFragment"
+        android:name="com.slavik.aproximadorfunciones.legacy.interfaz_legacy.fragments.TutorialFragment"
         android:label="fragment_tutorial"
         tools:layout="@layout/fragment_tutorial" />
 </navigation>

@@ -25,10 +25,10 @@
         </activity>
 
         <activity
-            android:name=".interfaz.SplashActivity"
+            android:name=".legacy.interfaz_legacy.SplashActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".interfaz.MainActivity"
+            android:name=".legacy.interfaz_legacy.MainActivity"
             android:screenOrientation="portrait" />
 
         <meta-data

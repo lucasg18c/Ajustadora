@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".interfaz.fragments.PuntosFragment"
+    tools:context=".legacy.interfaz_legacy.fragments.PuntosFragment"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar

@@ -1,9 +1,16 @@
 package com.slavik.aproximadorfunciones.mmc.modelo.funciones
 
+import com.slavik.aproximadorfunciones.R
 import com.slavik.aproximadorfunciones.mmc.modelo.Punto
 import com.slavik.aproximadorfunciones.mmc.modelo.SEL
 
 class Exponencial : Funcion() {
+    companion object {
+        const val NOMBRE = "Exponencial"
+    }
+
+    override val imagen: Int = R.drawable.ic_exponencial
+
     override fun getSEL(puntos: List<Punto>): SEL {
         TODO("Not yet implemented")
     }
@@ -20,7 +27,5 @@ class Exponencial : Funcion() {
         TODO("Not yet implemented")
     }
 
-    override var nombre: String
-        get() = TODO("Not yet implemented")
-        set(value) {}
+    override var nombre: String = NOMBRE
 }

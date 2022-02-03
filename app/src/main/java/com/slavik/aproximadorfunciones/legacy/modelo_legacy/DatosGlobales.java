@@ -1,11 +1,11 @@
-package com.slavik.aproximadorfunciones.modelo;
+package com.slavik.aproximadorfunciones.legacy.modelo_legacy;
 
-import com.slavik.aproximadorfunciones.modelo.funciones.AutoFuncion;
-import com.slavik.aproximadorfunciones.modelo.funciones.Exponencial;
-import com.slavik.aproximadorfunciones.modelo.funciones.Funcion;
-import com.slavik.aproximadorfunciones.modelo.funciones.Lineal;
-import com.slavik.aproximadorfunciones.modelo.funciones.Logaritmica;
-import com.slavik.aproximadorfunciones.modelo.funciones.Parabola;
+import com.slavik.aproximadorfunciones.legacy.modelo_legacy.funciones.AutoFuncion;
+import com.slavik.aproximadorfunciones.legacy.modelo_legacy.funciones.Exponencial;
+import com.slavik.aproximadorfunciones.legacy.modelo_legacy.funciones.Funcion;
+import com.slavik.aproximadorfunciones.legacy.modelo_legacy.funciones.Lineal;
+import com.slavik.aproximadorfunciones.legacy.modelo_legacy.funciones.Logaritmica;
+import com.slavik.aproximadorfunciones.legacy.modelo_legacy.funciones.Parabola;
 
 public class DatosGlobales {
 

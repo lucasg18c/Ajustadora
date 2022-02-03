@@ -1,10 +1,10 @@
 package com.slavik.aproximadorfunciones.mmc.modelo.funciones
 
+import com.slavik.aproximadorfunciones.R
 import com.slavik.aproximadorfunciones.mmc.modelo.Punto
 import com.slavik.aproximadorfunciones.mmc.modelo.SEL
 import com.slavik.aproximadorfunciones.mmc.util.Formato
 import com.slavik.aproximadorfunciones.mmc.util.Formato.round
-import kotlin.math.abs
 
 class Lineal : Funcion() {
     companion object {
@@ -60,19 +60,18 @@ class Lineal : Funcion() {
                     visible = false
                 )
             )
-        }
-        else {
+        } else {
             // Comprobar si todos los puntos tienen igual x
             var x: Double? = null
             var xIguales = true
 
             for (punto in puntos) {
-                if (x == null){
+                if (x == null) {
                     x = punto.x
                 }
 
                 // Si hay x distinto no hay problema
-                else if (punto.x != x){
+                else if (punto.x != x) {
                     xIguales = false
                     break
                 }
@@ -96,9 +95,9 @@ class Lineal : Funcion() {
         return puntos
     }
 
-    override var nombre: String
-        get() = NOMBRE
-        set(_) {}
+    override val nombre: String = NOMBRE
+
+    override val imagen: Int = R.drawable.ic_lineal
 
     override fun getSEL(puntos: List<Punto>): SEL {
         return SEL(

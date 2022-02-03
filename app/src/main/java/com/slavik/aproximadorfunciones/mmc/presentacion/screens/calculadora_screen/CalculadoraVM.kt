@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.slavik.aproximadorfunciones.mmc.modelo.ModeloAjuste
 import com.slavik.aproximadorfunciones.mmc.modelo.Punto
+import com.slavik.aproximadorfunciones.mmc.presentacion.navegacion.Destino
 import com.slavik.aproximadorfunciones.mmc.util.EventoUI
 import com.slavik.aproximadorfunciones.mmc.util.Formato
 import kotlinx.coroutines.channels.Channel
@@ -30,12 +31,8 @@ class CalculadoraVM : ViewModel() {
     var puntos by mutableStateOf(mutableListOf<Punto>())
         private set
 
-    var modelo by mutableStateOf(iniciarModelo())
+    var modelo by mutableStateOf(ModeloAjuste.getInstance())
         private set
-
-    private fun iniciarModelo(): ModeloAjuste {
-        return ModeloAjuste()
-    }
 
     fun agregarEditarPunto() {
         val xDouble = Formato.aDecimal(x)
@@ -106,7 +103,7 @@ class CalculadoraVM : ViewModel() {
     }
 
     fun onDispose() {
-
+        ModeloAjuste.resetInstance()
     }
 
     private fun enviarEvento(evento: EventoUI) {
@@ -131,5 +128,10 @@ class CalculadoraVM : ViewModel() {
         modelo.puntos = puntos
 
         modelo.resolver()
+    }
+
+    fun cambioModelo() {
+        modelo = ModeloAjuste.getInstance() //todo al hacer pop back stack al elegir funcion, no se guarda el tipo
+        modelo.puntos = puntos
     }
 }

@@ -12,14 +12,15 @@ abstract class Funcion {
 
     var base: Double = 1.0
 
+    abstract val imagen: Int
+
     abstract fun getSEL(puntos: List<Punto>): SEL
     abstract fun valuar(x: Double): Double
 
     abstract fun getFormula(): String
     abstract fun prepararPuntos(puntos: MutableList<Punto>): MutableList<Punto>
 
-    abstract var nombre: String
-        protected set
+    abstract val nombre: String
 
     fun resolver(puntos: List<Punto>) : List<Punto> {
         val puntosCopy = preparacionInicial(puntos)

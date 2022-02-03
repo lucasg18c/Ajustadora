@@ -1,4 +1,4 @@
-package com.slavik.aproximadorfunciones.modelo;
+package com.slavik.aproximadorfunciones.legacy.modelo_legacy;
 
 public class Punto {
     public double x, y;

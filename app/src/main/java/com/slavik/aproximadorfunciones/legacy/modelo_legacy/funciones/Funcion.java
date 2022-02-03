@@ -1,8 +1,8 @@
-package com.slavik.aproximadorfunciones.modelo.funciones;
+package com.slavik.aproximadorfunciones.legacy.modelo_legacy.funciones;
 
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
-import com.slavik.aproximadorfunciones.modelo.Punto;
+import com.slavik.aproximadorfunciones.legacy.modelo_legacy.Punto;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
