@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -15,9 +14,9 @@ import com.jjoe64.graphview.GraphView
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
 import com.jjoe64.graphview.series.PointsGraphSeries
-import com.slavik.aproximadorfunciones.mmc.modelo.Funcion
 import com.slavik.aproximadorfunciones.mmc.modelo.ModeloAjuste
 import com.slavik.aproximadorfunciones.mmc.modelo.Punto
+import com.slavik.aproximadorfunciones.mmc.modelo.funciones.Lineal
 import com.slavik.aproximadorfunciones.mmc.presentacion.theme.Celeste
 import com.slavik.aproximadorfunciones.mmc.presentacion.theme.NaranjaClaro
 import java.util.*
@@ -35,19 +34,23 @@ fun Grafica(
         },
         update = { view ->
             view.apply {
+                series.clear()
+
                 addSeries(
                     PointsGraphSeries<DataPoint>().apply {
                         modelo.puntos
                             .sortedBy { it.x }
                             .forEach { punto ->
-                                appendData(
-                                    DataPoint(
-                                        punto.x.toDouble(),
-                                        punto.y.toDouble()
-                                    ),
-                                    false,
-                                    150
-                                )
+                                if (punto.visible) {
+                                    appendData(
+                                        DataPoint(
+                                            punto.x,
+                                            punto.y
+                                        ),
+                                        false,
+                                        150
+                                    )
+                                }
                             }
 
                         shape = PointsGraphSeries.Shape.POINT
@@ -57,11 +60,21 @@ fun Grafica(
                     }
                 )
 
-                var minX = modelo.puntos.minOf { it.x }.toInt()
-                var maxX = modelo.puntos.maxOf { it.x }.toInt()
-                val margen = ceil((maxX - minX) * .2).toInt()
-                minX -= margen
-                maxX += margen
+                var minX: Int
+                var maxX: Int
+                if (modelo.puntos.size == 1) {
+                    minX = modelo.puntos[0].x.toInt() - 5
+                    maxX = modelo.puntos[0].x.toInt() + 5
+                }
+                else{
+                    minX = modelo.puntos.minOf { it.x }.toInt()
+                    maxX = modelo.puntos.maxOf { it.x }.toInt()
+                    val margen = ceil((maxX - minX) * .2).toInt()
+                    minX -= margen
+                    maxX += margen
+                }
+
+
                 val paso = (maxX - minX) / 150F
                 var x = minX.toDouble()
 
@@ -90,9 +103,7 @@ fun Grafica(
                             )
                             x += paso
                         }
-
                         color = NaranjaClaro.toArgb()
-
                     }
                 )
 
@@ -107,13 +118,17 @@ fun Grafica(
                     setMaxX(maxX.toDouble())
                     setMinX(minX.toDouble())
 
-                    val margenY = ((maxY!! - minY!!) * 0.2F).toInt()
+                    val maxYPunto = modelo.puntos.maxOf { it.y }
+                    val minYPunto = modelo.puntos.minOf { it.y }
+
+                    minY = if (minY!! < minYPunto) minY else minYPunto
+                    maxY = if (maxY!! > maxYPunto) maxY else maxYPunto
+
+                    val margenY = ceil((maxY!! - minY!!) * 0.2F).toInt()
 
                     setMaxY(maxY!! + margenY)
                     setMinY(minY!! - margenY)
-
                 }
-
             }
         },
         modifier = modifier
@@ -132,12 +147,12 @@ fun GraficaPreview() {
                 .height(300.dp),
 
             modelo = ModeloAjuste(
-                puntos = listOf(
-                    Punto(1f, 2f),
-                    Punto(2f, 3f),
-                    Punto(3f, 4f),
+                puntos = mutableListOf(
+                    Punto(1.0, 2.0),
+                    Punto(2.0, 3.0),
+                    Punto(3.0, 4.0),
                 ),
-                funcion = Funcion(),
+                funcion = Lineal(),
                 Calendar.getInstance()
             )
         )

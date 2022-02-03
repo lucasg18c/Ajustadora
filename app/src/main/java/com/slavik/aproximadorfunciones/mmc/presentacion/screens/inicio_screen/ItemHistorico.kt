@@ -11,11 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.slavik.aproximadorfunciones.mmc.modelo.Funcion
+import com.slavik.aproximadorfunciones.mmc.modelo.funciones.Funcion
 import com.slavik.aproximadorfunciones.mmc.modelo.ModeloAjuste
 import com.slavik.aproximadorfunciones.mmc.modelo.Punto
+import com.slavik.aproximadorfunciones.mmc.modelo.funciones.Lineal
 import com.slavik.aproximadorfunciones.mmc.presentacion.theme.Celeste
-import com.slavik.aproximadorfunciones.mmc.util.Pruebas
 import java.util.*
 
 @Composable
@@ -92,14 +92,14 @@ fun ItemHistorico(
 fun ItemHistoricoPreview() {
     ItemHistorico(
         modelo = ModeloAjuste(
-            listOf(
+            mutableListOf(
                 Punto(1f, 4f),
                 Punto(5f, 8f),
                 Punto(7f, 14f),
                 Punto(11f, 24f),
             ),
             fecha = Calendar.getInstance(),
-            funcion = Funcion()
+            funcion = Lineal()
         )
     )
 }

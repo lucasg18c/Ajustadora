@@ -25,4 +25,17 @@ object Formato {
 
         return DecimalFormat("#.##").format(numero)
     }
+
+    fun decimal(numero: Double) : String {
+        if (numero == 0.0) return "0"
+        return DecimalFormat("#.##").format(numero)
+    }
+
+    fun aDecimal(numero: String) : Double {
+        return try {
+            numero.toDouble()
+        } catch (e: NumberFormatException) {
+            Double.NaN
+        }
+    }
 }

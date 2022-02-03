@@ -1,13 +1,14 @@
 package com.slavik.aproximadorfunciones.mmc.util
 
-import com.slavik.aproximadorfunciones.mmc.modelo.Funcion
+import com.slavik.aproximadorfunciones.mmc.modelo.funciones.Funcion
 import com.slavik.aproximadorfunciones.mmc.modelo.ModeloAjuste
 import com.slavik.aproximadorfunciones.mmc.modelo.Punto
+import com.slavik.aproximadorfunciones.mmc.modelo.funciones.Lineal
 import java.util.*
 
 object Pruebas {
     val modeloCompleto = ModeloAjuste(
-        listOf(
+        mutableListOf(
             Punto(1f, 4f),
             Punto(5f, 8f),
             Punto(-7f, 14f),
@@ -23,37 +24,37 @@ object Pruebas {
             Punto(7f, 14f),
             Punto(11f, 24f),
         ),
-        Funcion(),
+        Lineal(),
         Calendar.getInstance(),
         nombre = "Cambio de temperatura"
     )
 
     val modeloVacio =  ModeloAjuste(
-        listOf(),
-        Funcion(),
+        mutableListOf(),
+        Lineal(),
         Calendar.getInstance()
     )
 
     val modelos = listOf(
         ModeloAjuste(
-            listOf(
+            mutableListOf(
                 Punto(1f, 4f),
                 Punto(5f, 8f),
                 Punto(7f, 14f),
                 Punto(11f, 24f),
             ),
-            Funcion(),
+            Lineal(),
             Calendar.getInstance()
         ),
         ModeloAjuste(
-            listOf(
+            mutableListOf(
                 Punto(1f, 4f),
             ),
-            Funcion(),
+            Lineal(),
             Calendar.getInstance()
         ),
         ModeloAjuste(
-            listOf(
+            mutableListOf(
                 Punto(1f, 4f),
                 Punto(5f, 8f),
                 Punto(-7f, 14f),
@@ -69,30 +70,30 @@ object Pruebas {
                 Punto(7f, 14f),
                 Punto(11f, 24f),
             ),
-            Funcion(),
+            Lineal(),
             Calendar.getInstance(),
             nombre = "Cambio de temperatura"
         ),
         ModeloAjuste(
-            listOf(
+            mutableListOf(
                 Punto(1f, 4f),
                 Punto(5f, 8f),
                 Punto(7f, 14f),
                 Punto(11f, 24f),
             ),
-            Funcion(),
+            Lineal(),
             Calendar.getInstance()
         ),
         ModeloAjuste(
-            listOf(
+            mutableListOf(
                 Punto(1f, 4f),
                 Punto(5f, 8f),
             ),
-            Funcion(),
+            Lineal(),
             Calendar.getInstance()
         ),
         ModeloAjuste(
-            listOf(
+            mutableListOf(
                 Punto(1f, 4f),
                 Punto(5f, 8f),
                 Punto(7f, 14f),
@@ -101,7 +102,7 @@ object Pruebas {
                 Punto(7f, 14f),
                 Punto(11f, 24f),
             ),
-            Funcion(),
+            Lineal(),
             Calendar.getInstance(),
             nombre = "Cambio de temperatura"
         )

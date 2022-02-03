@@ -1,3 +1,5 @@
+@file:Suppress("EXPERIMENTAL_IS_NOT_ENABLED", "EXPERIMENTAL_IS_NOT_ENABLED")
+
 package com.slavik.aproximadorfunciones.mmc.presentacion.screens.calculadora_screen
 
 import androidx.compose.foundation.*
@@ -11,7 +13,9 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.flowlayout.FlowRow
 import com.slavik.aproximadorfunciones.R
 import com.slavik.aproximadorfunciones.mmc.modelo.ModeloAjuste
@@ -36,21 +41,52 @@ import com.slavik.aproximadorfunciones.mmc.presentacion.theme.AmarilloOscuro
 import com.slavik.aproximadorfunciones.mmc.presentacion.theme.Celeste
 import com.slavik.aproximadorfunciones.mmc.presentacion.theme.NaranjaClaro
 import com.slavik.aproximadorfunciones.mmc.presentacion.theme.NaranjaOscuro
-import com.slavik.aproximadorfunciones.mmc.util.Formato
+import com.slavik.aproximadorfunciones.mmc.util.EventoUI
 import com.slavik.aproximadorfunciones.mmc.util.Pruebas
+import kotlinx.coroutines.flow.collect
 
 @Composable
 fun CalculadoraScreen(
-    navegar: (Destino) -> Unit
+    navegar: (Destino) -> Unit,
+    vm: CalculadoraVM = viewModel() //todo usar di
 ) {
     val scaffoldState = rememberScaffoldState()
     val scrollState = rememberScrollState()
 
+    LaunchedEffect(key1 = true) {
+        vm.eventoUI.collect {
+            when (it) {
+                is EventoUI.Snackbar -> {
+                    if (scaffoldState.snackbarHostState.showSnackbar(it.mensaje, it.action) == SnackbarResult.ActionPerformed) {
+                        vm.eliminarPuntosConfirmado()
+                    }
+                }
+                else -> Unit
+            }
+        }
+    }
+
+    DisposableEffect(key1 = vm) {
+        onDispose {
+            vm.onDispose()
+        }
+    }
+
     Contenido(
         navegar = navegar,
-        modelo = Pruebas.modeloCompleto,
         scaffoldState = scaffoldState,
-        scrollState = scrollState
+        scrollState = scrollState,
+        vm.modelo,
+        vm.puntos,
+        x = vm.x,
+        y = vm.y,
+        vm.puntoSeleccionado,
+        vm::cambioX,
+        vm::cambioY,
+        vm::cambioPuntoSeleccionado,
+        vm::agregarEditarPunto,
+        vm::eliminarPunto,
+        vm::eliminarPuntos
     )
 }
 
@@ -58,16 +94,20 @@ fun CalculadoraScreen(
 @Composable
 private fun Contenido(
     navegar: (Destino) -> Unit,
-    modelo: ModeloAjuste,
     scaffoldState: ScaffoldState,
-    scrollState: ScrollState
+    scrollState: ScrollState,
+    modelo: ModeloAjuste,
+    puntos: List<Punto>,
+    x: String,
+    y: String,
+    puntoSeleccionado: Punto?,
+    cambioX: (String) -> Unit,
+    cambioY: (String) -> Unit,
+    cambioPuntoSeleccionado: (Punto?) -> Unit,
+    agregarEditarPunto: () -> Unit,
+    eliminarPunto: () -> Unit,
+    eliminarPuntos: () -> Unit,
 ) {
-
-    var x by remember { mutableStateOf("") }
-    var y by remember { mutableStateOf("") }
-    var puntoSeleccionado by remember {
-        mutableStateOf<Punto?>(null)
-    }
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -136,23 +176,23 @@ private fun Contenido(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
-                    if (modelo.puntos.isNotEmpty()) {
+                    if (puntos.isNotEmpty()) {
 
                         Grafica(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(220.dp)
                                 .padding(12.dp),
-                            modelo = Pruebas.modelos[2]
+                            modelo = modelo
                         )
 
                         Text(
-                            text = "y = 3.41x - 2",
+                            text = modelo.funcion.getFormula(),
                             fontSize = 22.sp,
                             textAlign = TextAlign.Center
                         )
                         Text(
-                            text = "Error: 3.4",
+                            text = "Error: ${modelo.funcion.error}",
                             fontSize = 20.sp,
                             textAlign = TextAlign.Center
                         )
@@ -202,10 +242,10 @@ private fun Contenido(
                 ) {
                     OutlinedTextField(
                         value = x,
-                        onValueChange = { x = it },
+                        onValueChange = { cambioX(it) },
                         label = {
                             Text(
-                                text = "X"
+                                text = modelo.ejeX
                             )
                         },
                         modifier = Modifier.width(80.dp),
@@ -217,10 +257,10 @@ private fun Contenido(
 
                     OutlinedTextField(
                         value = y,
-                        onValueChange = { y = it },
+                        onValueChange = { cambioY(it) },
                         label = {
                             Text(
-                                text = "Y"
+                                text = modelo.ejeY
                             )
                         },
                         modifier = Modifier.width(80.dp),
@@ -232,8 +272,8 @@ private fun Contenido(
                 if (puntoSeleccionado == null) {
 
                     IconButton(
-                        onClick = { /*TODO*/
-
+                        onClick = {
+                            agregarEditarPunto()
                         },
                         modifier = Modifier
                             .size(40.dp)
@@ -250,8 +290,8 @@ private fun Contenido(
                 } else {
                     Column {
                         IconButton(
-                            onClick = { /*TODO*/
-
+                            onClick = {
+                                agregarEditarPunto()
                             },
                             modifier = Modifier
                                 .size(40.dp)
@@ -268,10 +308,8 @@ private fun Contenido(
                         Spacer(modifier = Modifier.height(8.dp))
 
                         IconButton(
-                            onClick = { /*TODO*/
-                                puntoSeleccionado = null
-                                x = ""
-                                y = ""
+                            onClick = {
+                                cambioPuntoSeleccionado(null)
                             },
                             modifier = Modifier
                                 .size(40.dp)
@@ -288,7 +326,8 @@ private fun Contenido(
                         Spacer(modifier = Modifier.height(8.dp))
 
                         IconButton(
-                            onClick = { /*TODO*/
+                            onClick = {
+                                eliminarPunto()
                             },
                             modifier = Modifier
                                 .size(40.dp)
@@ -307,7 +346,7 @@ private fun Contenido(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            if (modelo.puntos.isNotEmpty()) {
+            if (puntos.isNotEmpty()) {
 
                 Card(
                     modifier = Modifier.fillMaxWidth(),
@@ -321,7 +360,7 @@ private fun Contenido(
                     ) {
 
                         FlowRow {
-                            modelo.puntos.forEach { punto ->
+                            puntos.forEach { punto ->
                                 Text(
                                     text = punto.toString(),
                                     fontSize = 16.sp,
@@ -329,10 +368,7 @@ private fun Contenido(
                                     modifier = Modifier
                                         .padding(8.dp)
                                         .clickable {
-                                            //todo
-                                            puntoSeleccionado = punto
-                                            x = Formato.decimal(puntoSeleccionado!!.x)
-                                            y = Formato.decimal(puntoSeleccionado!!.y)
+                                            cambioPuntoSeleccionado(punto)
                                         }
                                 )
                             }
@@ -344,7 +380,9 @@ private fun Contenido(
                             horizontalArrangement = Arrangement.End
                         ) {
                             TextButton(
-                                onClick = {/*todo*/ }) {
+                                onClick = {
+                                    eliminarPuntos()
+                                }) {
                                 Text(
                                     text = "Limpiar 🗑",
                                     textAlign = TextAlign.End,
@@ -367,8 +405,18 @@ fun CalculadoraScreenPreview(
 ) {
     Contenido(
         navegar = {},
-        modelo = Pruebas.modelos[2],
         rememberScaffoldState(),
-        rememberScrollState()
+        rememberScrollState(),
+        modelo = Pruebas.modelos[2],
+        puntos = Pruebas.modelos[2].puntos,
+        "12",
+        "12",
+        null,
+        {},
+        {},
+        {},
+        {},
+        {},
+        {}
     )
 }

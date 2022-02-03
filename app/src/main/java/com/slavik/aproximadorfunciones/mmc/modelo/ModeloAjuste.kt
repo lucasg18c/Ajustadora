@@ -1,13 +1,17 @@
 package com.slavik.aproximadorfunciones.mmc.modelo
 
+import com.slavik.aproximadorfunciones.mmc.modelo.funciones.Funcion
+import com.slavik.aproximadorfunciones.mmc.modelo.funciones.Lineal
 import com.slavik.aproximadorfunciones.mmc.util.Formato
 import java.util.*
 
 class ModeloAjuste(
-    var puntos : List<Punto>,
-    var funcion: Funcion,
-    var fecha: Calendar,
-    var nombre : String? = null
+    var puntos : MutableList<Punto> = mutableListOf(),
+    var funcion: Funcion = Lineal(),
+    var fecha: Calendar = Calendar.getInstance(),
+    var nombre : String? = null,
+    var ejeX : String = "X",
+    var ejeY : String = "Y",
 ) {
 
     fun resumen(maxCaracteres: Int): String{
@@ -32,5 +36,9 @@ class ModeloAjuste(
 
     fun fechaAsString(): String {
         return Formato.fecha(fecha)
+    }
+
+    fun resolver() {
+        funcion.resolver(puntos)
     }
 }
