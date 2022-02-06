@@ -19,7 +19,7 @@ fun TopBar(
     backgroundColor: Color = Color.White,
     contentColor: Color = Color.Black,
     titulo: String,
-    mostrarConfiguraciones: Boolean = true,
+    mostrarConfiguraciones: Boolean = false,
     mostrarEditar: Boolean = false,
     navegar : (Destino) -> Unit
 ) {

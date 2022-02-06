@@ -8,12 +8,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.slavik.aproximadorfunciones.mmc.presentacion.componentes.TopBar
-import com.slavik.aproximadorfunciones.mmc.presentacion.theme.Celeste
+import com.slavik.aproximadorfunciones.mmc.presentacion.theme.Azul1
 
 @Composable
 fun EditarModeloScreen(
@@ -95,7 +94,7 @@ private fun EditarModeloScreenContenido(
                     onClick = { /*TODO*/
                         volver()
                     },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Celeste),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Azul1),
                     shape = RoundedCornerShape(30.dp)
                 ) {
                     Text(

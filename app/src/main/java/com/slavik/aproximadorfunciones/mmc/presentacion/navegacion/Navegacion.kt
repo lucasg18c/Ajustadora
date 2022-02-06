@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.slavik.aproximadorfunciones.mmc.presentacion.screens.ConfiguracionScreen
 import com.slavik.aproximadorfunciones.mmc.presentacion.screens.calculadora_screen.CalculadoraScreen
+import com.slavik.aproximadorfunciones.mmc.presentacion.screens.calculadora_screen.CalculadoraScreen2
 import com.slavik.aproximadorfunciones.mmc.presentacion.screens.editar_modelo_screen.EditarModeloScreen
 import com.slavik.aproximadorfunciones.mmc.presentacion.screens.formas_screen.FormasScreen
 import com.slavik.aproximadorfunciones.mmc.presentacion.screens.inicio_screen.InicioScreen
@@ -33,7 +34,7 @@ fun Navegacion(
         composable(
             route = Destino.Calculadora.ruta
         ) {
-            CalculadoraScreen(
+            CalculadoraScreen2(
                 navegar = { destino ->
                     navController.navigate(destino.ruta)
                 }

@@ -38,8 +38,8 @@ import com.slavik.aproximadorfunciones.mmc.presentacion.componentes.Grafica
 import com.slavik.aproximadorfunciones.mmc.presentacion.componentes.TopBar
 import com.slavik.aproximadorfunciones.mmc.presentacion.navegacion.Destino
 import com.slavik.aproximadorfunciones.mmc.presentacion.theme.AmarilloOscuro
-import com.slavik.aproximadorfunciones.mmc.presentacion.theme.Celeste
-import com.slavik.aproximadorfunciones.mmc.presentacion.theme.NaranjaClaro
+import com.slavik.aproximadorfunciones.mmc.presentacion.theme.Azul1
+import com.slavik.aproximadorfunciones.mmc.presentacion.theme.Naranja1
 import com.slavik.aproximadorfunciones.mmc.presentacion.theme.NaranjaOscuro
 import com.slavik.aproximadorfunciones.mmc.util.EventoUI
 import com.slavik.aproximadorfunciones.mmc.util.Pruebas
@@ -279,7 +279,7 @@ private fun Contenido(
                         modifier = Modifier
                             .size(40.dp)
                             .clip(CircleShape)
-                            .background(NaranjaClaro)
+                            .background(Naranja1)
                     ) {
                         Icon(
                             imageVector = Icons.Default.Add,
@@ -297,7 +297,7 @@ private fun Contenido(
                             modifier = Modifier
                                 .size(40.dp)
                                 .clip(CircleShape)
-                                .background(Celeste)
+                                .background(Azul1)
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Edit,

@@ -1,5 +1,6 @@
 package com.slavik.aproximadorfunciones.mmc.modelo
 
+import androidx.compose.ui.text.AnnotatedString
 import com.slavik.aproximadorfunciones.mmc.modelo.funciones.Funcion
 import com.slavik.aproximadorfunciones.mmc.modelo.funciones.Lineal
 import com.slavik.aproximadorfunciones.mmc.util.Formato
@@ -10,7 +11,7 @@ class ModeloAjuste(
     var puntos : MutableList<Punto> = mutableListOf(),
     var funcion: Funcion = Lineal(),
     var fecha: Calendar = Calendar.getInstance(),
-    var nombre : String? = null,
+    var nombre : String = "Modelo",
     var ejeX : String = "X",
     var ejeY : String = "Y",
 ) {
@@ -45,6 +46,15 @@ class ModeloAjuste(
 
     fun getError() : String {
         return Formato.decimal(funcion.error)
+    }
+
+    fun getPuntos(): String {
+        var puntos = ""
+
+        this.puntos.forEach { punto ->
+            puntos += " $punto "
+        }
+        return puntos
     }
 
     companion object {

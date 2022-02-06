@@ -11,11 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.slavik.aproximadorfunciones.mmc.modelo.funciones.Funcion
 import com.slavik.aproximadorfunciones.mmc.modelo.ModeloAjuste
 import com.slavik.aproximadorfunciones.mmc.modelo.Punto
 import com.slavik.aproximadorfunciones.mmc.modelo.funciones.Lineal
-import com.slavik.aproximadorfunciones.mmc.presentacion.theme.Celeste
+import com.slavik.aproximadorfunciones.mmc.presentacion.theme.Azul1
 import java.util.*
 
 @Composable
@@ -43,7 +42,7 @@ fun ItemHistorico(
                 modifier = Modifier
                     .width(26.dp)
                     .height(26.dp),
-                color = Celeste,
+                color = Azul1,
                 shape = RoundedCornerShape(13.dp)
             ) {}
 

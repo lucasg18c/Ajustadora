@@ -17,8 +17,8 @@ import com.jjoe64.graphview.series.PointsGraphSeries
 import com.slavik.aproximadorfunciones.mmc.modelo.ModeloAjuste
 import com.slavik.aproximadorfunciones.mmc.modelo.Punto
 import com.slavik.aproximadorfunciones.mmc.modelo.funciones.Lineal
-import com.slavik.aproximadorfunciones.mmc.presentacion.theme.Celeste
-import com.slavik.aproximadorfunciones.mmc.presentacion.theme.NaranjaClaro
+import com.slavik.aproximadorfunciones.mmc.presentacion.theme.Azul1
+import com.slavik.aproximadorfunciones.mmc.presentacion.theme.Naranja1
 import java.util.*
 import kotlin.math.ceil
 
@@ -56,7 +56,7 @@ fun Grafica(
 
                         shape = PointsGraphSeries.Shape.POINT
                         size = 10f
-                        color = Celeste.toArgb()
+                        color = Azul1.toArgb()
 
                     }
                 )
@@ -104,7 +104,7 @@ fun Grafica(
                             )
                             x += paso
                         }
-                        color = NaranjaClaro.toArgb()
+                        color = Naranja1.toArgb()
                     }
                 )
 

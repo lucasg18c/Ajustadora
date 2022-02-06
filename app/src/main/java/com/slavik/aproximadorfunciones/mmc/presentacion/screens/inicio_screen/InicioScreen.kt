@@ -22,7 +22,7 @@ import com.slavik.aproximadorfunciones.R
 import com.slavik.aproximadorfunciones.mmc.modelo.ModeloAjuste
 import com.slavik.aproximadorfunciones.mmc.presentacion.componentes.TopBar
 import com.slavik.aproximadorfunciones.mmc.presentacion.navegacion.Destino
-import com.slavik.aproximadorfunciones.mmc.presentacion.theme.NaranjaClaro
+import com.slavik.aproximadorfunciones.mmc.presentacion.theme.Naranja1
 import com.slavik.aproximadorfunciones.mmc.util.Pruebas
 
 @Composable
@@ -78,7 +78,7 @@ private fun InicioScreenContenido(
                     .clickable {
                         navegar(Destino.Calculadora)
                     },
-                backgroundColor = NaranjaClaro,
+                backgroundColor = Naranja1,
                 shape = RoundedCornerShape(10.dp)
             ) {
                 Row(

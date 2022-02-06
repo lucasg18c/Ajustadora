@@ -118,4 +118,7 @@ dependencies {
 
     //Grilla puntos
     implementation "com.google.accompanist:accompanist-flowlayout:0.24.1-alpha"
+
+    // Animaciones Lottie
+    implementation "com.airbnb.android:lottie-compose:4.2.2"
 }
