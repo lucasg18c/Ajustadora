@@ -5,6 +5,6 @@ import com.slavik.aproximadorfunciones.mmc.presentacion.navegacion.Destino
 
 @Composable
 fun ResultadoScreen(
-    navegar: (Destino) -> Unit
+    navegar: (String) -> Unit
 ) {
 }

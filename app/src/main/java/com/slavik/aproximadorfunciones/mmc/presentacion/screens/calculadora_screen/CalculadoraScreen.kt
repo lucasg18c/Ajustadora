@@ -14,8 +14,6 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,8 +30,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.flowlayout.FlowRow
 import com.slavik.aproximadorfunciones.R
-import com.slavik.aproximadorfunciones.mmc.modelo.ModeloAjuste
-import com.slavik.aproximadorfunciones.mmc.modelo.Punto
+import com.slavik.aproximadorfunciones.mmc.dominio.modelo.ModeloAjuste
+import com.slavik.aproximadorfunciones.mmc.dominio.modelo.Punto
 import com.slavik.aproximadorfunciones.mmc.presentacion.componentes.Grafica
 import com.slavik.aproximadorfunciones.mmc.presentacion.componentes.TopBar
 import com.slavik.aproximadorfunciones.mmc.presentacion.navegacion.Destino
@@ -41,60 +39,58 @@ import com.slavik.aproximadorfunciones.mmc.presentacion.theme.AmarilloOscuro
 import com.slavik.aproximadorfunciones.mmc.presentacion.theme.Azul1
 import com.slavik.aproximadorfunciones.mmc.presentacion.theme.Naranja1
 import com.slavik.aproximadorfunciones.mmc.presentacion.theme.NaranjaOscuro
-import com.slavik.aproximadorfunciones.mmc.util.EventoUI
 import com.slavik.aproximadorfunciones.mmc.util.Pruebas
-import kotlinx.coroutines.flow.collect
 
 @Composable
 fun CalculadoraScreen(
-    navegar: (Destino) -> Unit,
+    navegar: (String) -> Unit,
     vm: CalculadoraVM = viewModel() //todo usar di
 ) {
-    val scaffoldState = rememberScaffoldState()
-    val scrollState = rememberScrollState()
-
-    LaunchedEffect(key1 = true) {
-        vm.cambioModelo()
-        vm.eventoUI.collect {
-            when (it) {
-                is EventoUI.Snackbar -> {
-                    if (scaffoldState.snackbarHostState.showSnackbar(it.mensaje, it.action) == SnackbarResult.ActionPerformed) {
-                        vm.eliminarPuntosConfirmado()
-                    }
-                }
-                else -> Unit
-            }
-        }
-    }
-
-    DisposableEffect(key1 = vm) {
-        onDispose {
-            vm.onDispose()
-        }
-    }
-
-    Contenido(
-        navegar = navegar,
-        scaffoldState = scaffoldState,
-        scrollState = scrollState,
-        vm.modelo,
-        vm.puntos,
-        x = vm.x,
-        y = vm.y,
-        vm.puntoSeleccionado,
-        vm::cambioX,
-        vm::cambioY,
-        vm::cambioPuntoSeleccionado,
-        vm::agregarEditarPunto,
-        vm::eliminarPunto,
-        vm::eliminarPuntos
-    )
+//    val scaffoldState = rememberScaffoldState()
+//    val scrollState = rememberScrollState()
+//
+//    LaunchedEffect(key1 = true) {
+//        vm.cambioModelo()
+//        vm.eventoUI.collect {
+//            when (it) {
+//                is EventoUI.Snackbar -> {
+//                    if (scaffoldState.snackbarHostState.showSnackbar(it.mensaje, it.action) == SnackbarResult.ActionPerformed) {
+//                        vm.eliminarPuntosConfirmado()
+//                    }
+//                }
+//                else -> Unit
+//            }
+//        }
+//    }
+//
+//    DisposableEffect(key1 = vm) {
+//        onDispose {
+//            vm.onDispose()
+//        }
+//    }
+//
+//    Contenido(
+//        navegar = navegar,
+//        scaffoldState = scaffoldState,
+//        scrollState = scrollState,
+//        vm.modelo,
+//        vm.puntos,
+//        x = vm.x,
+//        y = vm.y,
+//        vm.puntoSeleccionado,
+//        vm::cambioX,
+//        vm::cambioY,
+//        vm::cambioPuntoSeleccionado,
+//        vm::agregarEditarPunto,
+//        vm::eliminarPunto,
+//        vm::eliminarPuntos
+//    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun Contenido(
-    navegar: (Destino) -> Unit,
+    navegar: (String) -> Unit,
     scaffoldState: ScaffoldState,
     scrollState: ScrollState,
     modelo: ModeloAjuste,
@@ -133,7 +129,7 @@ private fun Contenido(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
-                        navegar(Destino.Formas)
+                        navegar(Destino.Formas.ruta)
                     },
                 elevation = 8.dp,
                 shape = RoundedCornerShape(10.dp)
@@ -167,7 +163,7 @@ private fun Contenido(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
-                        navegar(Destino.Resultado)
+                        navegar(Destino.Resultado.ruta)
                     },
                 elevation = 8.dp,
                 shape = RoundedCornerShape(8.dp)

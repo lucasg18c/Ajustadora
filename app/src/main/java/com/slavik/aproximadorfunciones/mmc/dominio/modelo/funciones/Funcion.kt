@@ -1,7 +1,7 @@
-package com.slavik.aproximadorfunciones.mmc.modelo.funciones
+package com.slavik.aproximadorfunciones.mmc.dominio.modelo.funciones
 
-import com.slavik.aproximadorfunciones.mmc.modelo.Punto
-import com.slavik.aproximadorfunciones.mmc.modelo.SEL
+import com.slavik.aproximadorfunciones.mmc.dominio.modelo.Punto
+import com.slavik.aproximadorfunciones.mmc.dominio.modelo.SEL
 import kotlin.math.pow
 
 abstract class Funcion {

@@ -2,13 +2,14 @@ package com.slavik.aproximadorfunciones.mmc.presentacion.navegacion
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.slavik.aproximadorfunciones.mmc.presentacion.screens.ConfiguracionScreen
-import com.slavik.aproximadorfunciones.mmc.presentacion.screens.calculadora_screen.CalculadoraScreen
 import com.slavik.aproximadorfunciones.mmc.presentacion.screens.calculadora_screen.CalculadoraScreen2
 import com.slavik.aproximadorfunciones.mmc.presentacion.screens.editar_modelo_screen.EditarModeloScreen
-import com.slavik.aproximadorfunciones.mmc.presentacion.screens.formas_screen.FormasScreen
+import com.slavik.aproximadorfunciones.mmc.presentacion.screens.calculadora_screen.FormasScreen
 import com.slavik.aproximadorfunciones.mmc.presentacion.screens.inicio_screen.InicioScreen
 import com.slavik.aproximadorfunciones.mmc.presentacion.screens.resultado_screen.ResultadoScreen
 
@@ -26,23 +27,37 @@ fun Navegacion(
         ) {
             InicioScreen(
                 navegar = {destino ->
-                    navController.navigate(destino.ruta)
+                    navController.navigate(destino)
                 }
             )
         }
 
         composable(
-            route = Destino.Calculadora.ruta
+            route = Destino.Calculadora.ruta + "?id={id}",
+            arguments = listOf(
+                navArgument("id"){
+                    type = NavType.IntType
+                    defaultValue = -1
+                    nullable = false
+                }
+            )
         ) {
             CalculadoraScreen2(
                 navegar = { destino ->
-                    navController.navigate(destino.ruta)
+                    if (destino == null) navController.popBackStack()
+                    else navController.navigate(destino)
                 }
             )
         }
 
         composable(
-            route = Destino.EditarModelo.ruta
+            route = Destino.EditarModelo.ruta + "/{id}",
+            arguments = listOf(
+                navArgument("id") {
+                    type = NavType.IntType
+                    defaultValue = -1
+                }
+            )
         ) {
             EditarModeloScreen(
                 volver = {
@@ -56,7 +71,7 @@ fun Navegacion(
         ) {
             ResultadoScreen(
                 navegar = {destino ->
-                    navController.navigate(destino.ruta)
+                    navController.navigate(destino)
                 }
             )
         }

@@ -1,15 +1,16 @@
-package com.slavik.aproximadorfunciones.mmc.modelo.funciones
+package com.slavik.aproximadorfunciones.mmc.dominio.modelo.funciones
 
 import com.slavik.aproximadorfunciones.R
-import com.slavik.aproximadorfunciones.mmc.modelo.Punto
-import com.slavik.aproximadorfunciones.mmc.modelo.SEL
+import com.slavik.aproximadorfunciones.mmc.dominio.modelo.Punto
+import com.slavik.aproximadorfunciones.mmc.dominio.modelo.SEL
 
-class Exponencial : Funcion() {
+class Logaritmica : Funcion() {
+
     companion object {
-        const val NOMBRE = "Exponencial"
+        const val NOMBRE = "Logarítmica"
     }
 
-    override val imagen: Int = R.drawable.ic_exponencial
+    override val imagen: Int = R.drawable.ic_logaritmica
 
     override fun getSEL(puntos: List<Punto>): SEL {
         TODO("Not yet implemented")

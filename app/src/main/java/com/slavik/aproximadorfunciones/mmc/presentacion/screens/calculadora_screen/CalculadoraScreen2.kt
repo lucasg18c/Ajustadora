@@ -1,5 +1,8 @@
+@file:Suppress("EXPERIMENTAL_IS_NOT_ENABLED")
+
 package com.slavik.aproximadorfunciones.mmc.presentacion.screens.calculadora_screen
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -19,54 +22,72 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.rememberLottieComposition
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.flowlayout.FlowRow
 import com.slavik.aproximadorfunciones.R
-import com.slavik.aproximadorfunciones.mmc.modelo.ModeloAjuste
-import com.slavik.aproximadorfunciones.mmc.modelo.Punto
+import com.slavik.aproximadorfunciones.mmc.dominio.modelo.ModeloAjuste
+import com.slavik.aproximadorfunciones.mmc.dominio.modelo.Punto
 import com.slavik.aproximadorfunciones.mmc.presentacion.componentes.Grafica
 import com.slavik.aproximadorfunciones.mmc.presentacion.componentes.TopBar
 import com.slavik.aproximadorfunciones.mmc.presentacion.navegacion.Destino
 import com.slavik.aproximadorfunciones.mmc.presentacion.theme.*
+import com.slavik.aproximadorfunciones.mmc.util.EventoUI
 import com.slavik.aproximadorfunciones.mmc.util.Pruebas
+import kotlinx.coroutines.flow.collect
 
 @Composable
 fun CalculadoraScreen2(
-    navegar: (Destino) -> Unit,
+    navegar: (String?) -> Unit,
+    vm: CalculadoraVM = hiltViewModel()
 ) {
-    val modelo by remember { mutableStateOf(ModeloAjuste()) }
-    var x by remember { mutableStateOf("") }
-    var y by remember { mutableStateOf("") }
-    var mostrarPuntos by remember { mutableStateOf(false) }
-    var puntoSeleccionado by remember { mutableStateOf<Punto?>(null) }
 
-    modelo.resolver()
+    val scaffoldState = rememberScaffoldState()
+
+    LaunchedEffect(key1 = true) {
+        //vm.onEvento(EventoCalculadora.Iniciar(idModelo))
+
+        vm.eventoUI.collect {
+            when (it) {
+                is EventoUI.Navegar -> navegar(it.destino.ruta)
+                is EventoUI.Snackbar -> {
+                    // Se usa solo para confirmar si se eliminan todos los puntos
+                    val resultado = scaffoldState.snackbarHostState.showSnackbar(
+                        it.mensaje,
+                        it.action
+                    )
+
+                    if (resultado == SnackbarResult.ActionPerformed)
+                        vm.onEvento(EventoCalculadora.EliminarPuntos(true))
+                }
+                else -> Unit
+            }
+        }
+    }
+
+    BackHandler{
+        vm.onEvento(EventoCalculadora.Cerrar)
+        navegar(null)
+    }
 
     Contenido(
         navegar = navegar,
-        scaffoldState = rememberScaffoldState(),
-        modelo = modelo,
-        x,
-        y,
-        mostrarPuntos,
-        puntoSeleccionado,
-        { mostrarPuntos = it },
-        { x = it },
-        { y = it },
-        { puntoSeleccionado = it },
+        scaffoldState = scaffoldState,
+        modelo = vm.modelo,
+        x = vm.x,
+        y = vm.y,
+        mostrarPuntos = vm.mostrarPuntos,
+        puntoSeleccionado = vm.puntoSeleccionado,
+        vm::onEvento
     )
 }
 
@@ -74,45 +95,33 @@ fun CalculadoraScreen2(
 @Preview(showBackground = true)
 fun CalculadoraScreen2Preview(
 ) {
-    val modelo by remember { mutableStateOf(ModeloAjuste()) }
-    var x by remember { mutableStateOf("") }
-    var y by remember { mutableStateOf("") }
-    var mostrarPuntos by remember { mutableStateOf(false) }
-    var puntoSeleccionado by remember { mutableStateOf<Punto?>(null) }
-
-    modelo.resolver()
-
     Contenido(
         navegar = {},
         scaffoldState = rememberScaffoldState(),
-        modelo = modelo,
-        x,
-        y,
-        mostrarPuntos,
-        puntoSeleccionado,
-        { mostrarPuntos = it },
-        { x = it },
-        { y = it },
-        { puntoSeleccionado = it },
+        modelo = Pruebas.modeloCompleto,
+        x = "12",
+        y = "5",
+        mostrarPuntos = false,
+        puntoSeleccionado = null,
+        {}
     )
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun Contenido(
-    navegar: (Destino) -> Unit,
+    navegar: (String) -> Unit,
     scaffoldState: ScaffoldState,
     modelo: ModeloAjuste,
     x: String,
     y: String,
     mostrarPuntos: Boolean,
     puntoSeleccionado: Punto?,
-    cambioMostrarPuntos: (Boolean) -> Unit,
-    cambioX: (String) -> Unit,
-    cambioY: (String) -> Unit,
-    cambioPuntoSeleccionado: (Punto?) -> Unit,
+    onEvento: (EventoCalculadora) -> Unit
 ) {
     val scrollState = rememberScrollState()
+    var focusX by remember { mutableStateOf(false) }
+    var focusY by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = Modifier
@@ -120,10 +129,11 @@ private fun Contenido(
         scaffoldState = scaffoldState,
         topBar = {
             TopBar(
-                titulo = modelo.nombre,
+                titulo = modelo.nombre.ifBlank { "Modelo nuevo" },
                 navegar = navegar,
                 mostrarConfiguraciones = true,
-                mostrarEditar = true
+                mostrarEditar = true,
+                modeloActual = modelo
             )
         }
     ) {
@@ -136,21 +146,24 @@ private fun Contenido(
         ) {
 
             if (modelo.puntos.isEmpty()) {
-                Column(modifier = Modifier
-                    .fillMaxSize()
-                    .padding(
-                        horizontal = 32.dp,
-                        vertical = 16.dp,
-                    ),
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(
+                            horizontal = 32.dp,
+                            vertical = 16.dp,
+                        ),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    Image(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_mathematics_bro),
-                        contentDescription = "Agregá puntos",
-                        modifier = Modifier.fillMaxWidth(),
-                        contentScale = ContentScale.FillWidth
-                    )
+                    if (!(focusX || focusY)) {
+                        Image(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_mathematics_bro),
+                            contentDescription = "Agregá puntos",
+                            modifier = Modifier.fillMaxWidth(),
+                            contentScale = ContentScale.FillWidth
+                        )
+                    }
 
                     Spacer(modifier = Modifier.height(12.dp))
 
@@ -160,11 +173,11 @@ private fun Contenido(
                         textAlign = TextAlign.Center
                     )
 
-                        Text(
-                            text = "Agrega puntos a tu modelo para comenzar a ajustar la función.",
-                            style = Texto,
-                            textAlign = TextAlign.Center
-                        )
+                    Text(
+                        text = "Agrega puntos a tu modelo para comenzar a ajustar la función.",
+                        style = Texto,
+                        textAlign = TextAlign.Center
+                    )
 
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -180,7 +193,7 @@ private fun Contenido(
                         TextField(
                             value = x,
                             onValueChange = {
-                                cambioX(it)
+                                onEvento(EventoCalculadora.CambioX(it))
                             },
                             colors = TextFieldDefaults.outlinedTextFieldColors(
                                 textColor = Azul1,
@@ -203,6 +216,9 @@ private fun Contenido(
                             ),
                             modifier = Modifier
                                 .weight(1f)
+                                .onFocusChanged {
+                                    focusX = it.isFocused
+                                }
                         )
 
                         Spacer(modifier = Modifier.width(20.dp))
@@ -210,7 +226,7 @@ private fun Contenido(
                         TextField(
                             value = y,
                             onValueChange = {
-                                cambioY(it)
+                                onEvento(EventoCalculadora.CambioY(it))
                             },
                             colors = TextFieldDefaults.outlinedTextFieldColors(
                                 textColor = Azul1,
@@ -233,6 +249,9 @@ private fun Contenido(
                             ),
                             modifier = Modifier
                                 .weight(1f)
+                                .onFocusChanged {
+                                    focusY = it.isFocused
+                                }
                         )
                     }
 
@@ -244,8 +263,9 @@ private fun Contenido(
                             .padding(horizontal = 32.dp),
                         colors = ButtonDefaults.buttonColors(backgroundColor = Naranja1),
                         onClick = {
-                            // todo
-                        }
+                            onEvento(EventoCalculadora.AgregarEditarPunto)
+                        },
+                        enabled = x.isNotBlank() && y.isNotBlank()
                     ) {
                         Text(
                             text = "Agregar",
@@ -292,7 +312,7 @@ private fun Contenido(
                                     TextField(
                                         value = x,
                                         onValueChange = {
-                                            cambioX(it)
+                                            onEvento(EventoCalculadora.CambioX(it))
                                         },
                                         colors = TextFieldDefaults.outlinedTextFieldColors(
                                             textColor = Azul1,
@@ -321,7 +341,7 @@ private fun Contenido(
                                     TextField(
                                         value = y,
                                         onValueChange = {
-                                            cambioY(it)
+                                            onEvento(EventoCalculadora.CambioY(it))
                                         },
                                         colors = TextFieldDefaults.outlinedTextFieldColors(
                                             textColor = Azul1,
@@ -350,7 +370,7 @@ private fun Contenido(
                                 if (puntoSeleccionado == null) {
                                     IconButton(
                                         onClick = {
-                                            // todo
+                                            onEvento(EventoCalculadora.AgregarEditarPunto)
                                         },
                                         modifier = Modifier
                                             .size(40.dp)
@@ -370,7 +390,7 @@ private fun Contenido(
                                     ) {
                                         IconButton(
                                             onClick = {
-                                                cambioPuntoSeleccionado(null) //todo
+                                                onEvento(EventoCalculadora.AgregarEditarPunto)
                                             },
                                             modifier = Modifier
                                                 .size(40.dp)
@@ -383,10 +403,10 @@ private fun Contenido(
                                                 tint = Color.White
                                             )
                                         }
-                                        Row() {
+                                        Row {
                                             IconButton(
                                                 onClick = {
-                                                    cambioPuntoSeleccionado(null) // todo
+                                                    onEvento(EventoCalculadora.CambioPuntoSeleccionado(null))
                                                 },
                                                 modifier = Modifier
                                                     .size(40.dp)
@@ -403,7 +423,7 @@ private fun Contenido(
 
                                             IconButton(
                                                 onClick = {
-                                                    cambioPuntoSeleccionado(null) // todo
+                                                    onEvento(EventoCalculadora.EliminarPunto)
                                                 },
                                                 modifier = Modifier
                                                     .size(40.dp)
@@ -432,9 +452,10 @@ private fun Contenido(
                                     elevation = 6.dp,
                                     shape = RoundedCornerShape(8.dp)
                                 ) {
-                                    Row(modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(8.dp),
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(8.dp),
                                         verticalAlignment = Alignment.CenterVertically
                                     ) {
                                         if (mostrarPuntos || modelo.puntos.size < 4) {
@@ -447,7 +468,7 @@ private fun Contenido(
                                                 modelo.puntos.forEach { punto ->
                                                     TextButton(
                                                         onClick = {
-                                                            cambioPuntoSeleccionado(punto)
+                                                            onEvento(EventoCalculadora.CambioPuntoSeleccionado(punto))
                                                         },
                                                         colors = ButtonDefaults.textButtonColors(
                                                             contentColor = Azul2
@@ -465,7 +486,7 @@ private fun Contenido(
                                             }
                                         } else {
                                             Text(
-                                                text = modelo.getPuntos(),
+                                                text = modelo.puntosString(),
                                                 style = TextoChico,
                                                 overflow = TextOverflow.Clip,
                                                 maxLines = 1,
@@ -479,7 +500,7 @@ private fun Contenido(
                                         ) {
                                             IconButton(
                                                 onClick = {
-                                                    cambioMostrarPuntos(!mostrarPuntos)
+                                                    onEvento(EventoCalculadora.CambioMostrarPuntos)
                                                 }
                                             ) {
                                                 Icon(
@@ -491,7 +512,7 @@ private fun Contenido(
                                             if (mostrarPuntos) {
                                                 IconButton(
                                                     onClick = {
-                                                        // todo
+                                                        onEvento(EventoCalculadora.EliminarPuntos(false))
                                                     }
                                                 ) {
                                                     Icon(
@@ -547,7 +568,7 @@ private fun Contenido(
                             .width(230.dp)
                             .height(230.dp)
                             .clickable {
-                                navegar(Destino.Formas)
+                                navegar(Destino.Formas.ruta)
                             },
                         elevation = 6.dp,
                         shape = RoundedCornerShape(10.dp)
@@ -555,10 +576,15 @@ private fun Contenido(
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(16.dp),
-                            contentAlignment = Alignment.Center
+                                .padding(8.dp),
+                            contentAlignment = Alignment.CenterStart
                         ) {
-                            Grafica(modelo = modelo)
+                            Grafica(
+                                modelo = modelo,
+                                modifier = Modifier
+                                    .requiredWidth(240.dp)
+                                    .height(230.dp)
+                            )
                         }
 
                         Box(

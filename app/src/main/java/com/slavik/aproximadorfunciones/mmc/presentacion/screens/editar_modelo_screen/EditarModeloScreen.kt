@@ -11,31 +11,44 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.slavik.aproximadorfunciones.mmc.dominio.modelo.ModeloAjuste
 import com.slavik.aproximadorfunciones.mmc.presentacion.componentes.TopBar
+import com.slavik.aproximadorfunciones.mmc.presentacion.screens.calculadora_screen.CalculadoraVM
 import com.slavik.aproximadorfunciones.mmc.presentacion.theme.Azul1
+import com.slavik.aproximadorfunciones.mmc.util.EventoUI
+import kotlinx.coroutines.flow.collect
 
 @Composable
 fun EditarModeloScreen(
-    volver: () -> Unit
+    volver: () -> Unit,
+    vm: EditarVM = hiltViewModel()
 ) {
     val scaffoldState = rememberScaffoldState()
 
+    LaunchedEffect(key1 = true) {
+        vm.evento.collect {
+            if (it is EventoUI.Volver) volver()
+        }
+    }
+
     EditarModeloScreenContenido(
-        volver = volver,
-        scaffoldState = scaffoldState
+        scaffoldState = scaffoldState,
+        ejeX = vm.x,
+        ejeY = vm.y,
+        nombre = vm.nombre,
+        onEvento = vm::onEvento
     )
 }
 
 @Composable
 private fun EditarModeloScreenContenido(
-    volver: () -> Unit,
-    scaffoldState: ScaffoldState
+    scaffoldState: ScaffoldState,
+    ejeX: String,
+    ejeY: String,
+    nombre: String,
+    onEvento: (EventoEditarModelo) -> Unit
 ) {
-
-    var nombre by remember { mutableStateOf("") }
-    var ejeX by remember { mutableStateOf("") }
-    var ejeY by remember { mutableStateOf("") }
-
     Scaffold(
         scaffoldState = scaffoldState,
         modifier = Modifier.fillMaxSize(),
@@ -56,7 +69,7 @@ private fun EditarModeloScreenContenido(
 
             OutlinedTextField(
                 value = nombre,
-                onValueChange = { nombre = it },
+                onValueChange = { onEvento(EventoEditarModelo.CambioNombre(it)) },
                 label = {
                     Text(text = "Nombre")
                 },
@@ -66,7 +79,7 @@ private fun EditarModeloScreenContenido(
 
             OutlinedTextField(
                 value = ejeX,
-                onValueChange = { ejeX = it },
+                onValueChange = { onEvento(EventoEditarModelo.CambioX(it)) },
                 label = {
                     Text(text = "Eje X")
                 },
@@ -76,7 +89,7 @@ private fun EditarModeloScreenContenido(
 
             OutlinedTextField(
                 value = ejeY,
-                onValueChange = { ejeY = it },
+                onValueChange = { onEvento(EventoEditarModelo.CambioY(it)) },
                 label = {
                     Text(text = "Eje Y")
                 },
@@ -91,8 +104,8 @@ private fun EditarModeloScreenContenido(
             ) {
                 Button(
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = { /*TODO*/
-                        volver()
+                    onClick = {
+                        onEvento(EventoEditarModelo.Guardar)
                     },
                     colors = ButtonDefaults.buttonColors(backgroundColor = Azul1),
                     shape = RoundedCornerShape(30.dp)

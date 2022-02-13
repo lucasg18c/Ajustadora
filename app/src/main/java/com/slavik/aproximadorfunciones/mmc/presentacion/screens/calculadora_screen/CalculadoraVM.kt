@@ -3,18 +3,26 @@ package com.slavik.aproximadorfunciones.mmc.presentacion.screens.calculadora_scr
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.slavik.aproximadorfunciones.mmc.modelo.ModeloAjuste
-import com.slavik.aproximadorfunciones.mmc.modelo.Punto
-import com.slavik.aproximadorfunciones.mmc.presentacion.navegacion.Destino
+import com.slavik.aproximadorfunciones.mmc.dominio.casos_uso.CasosUso
+import com.slavik.aproximadorfunciones.mmc.dominio.modelo.ModeloAjuste
+import com.slavik.aproximadorfunciones.mmc.dominio.modelo.Punto
 import com.slavik.aproximadorfunciones.mmc.util.EventoUI
 import com.slavik.aproximadorfunciones.mmc.util.Formato
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CalculadoraVM : ViewModel() {
+@HiltViewModel
+class CalculadoraVM @Inject constructor(
+    private val casosUso: CasosUso,
+    savedStateHandle: SavedStateHandle
+) : ViewModel() {
 
     private val _eventoUI = Channel<EventoUI>()
     val eventoUI = _eventoUI.receiveAsFlow()
@@ -25,16 +33,40 @@ class CalculadoraVM : ViewModel() {
     var y by mutableStateOf("")
         private set
 
+    var mostrarPuntos by mutableStateOf(false)
+        private set
+
     var puntoSeleccionado by mutableStateOf<Punto?>(null)
         private set
 
-    var puntos by mutableStateOf(mutableListOf<Punto>())
+    var modelo by mutableStateOf(ModeloAjuste())
         private set
 
-    var modelo by mutableStateOf(ModeloAjuste.getInstance())
-        private set
+    init {
+        val id = savedStateHandle.get<Int>("id")!!
 
-    fun agregarEditarPunto() {
+        viewModelScope.launch {
+            casosUso.buscarModelo(id).collect {
+                modelo = it
+                if (modelo.puntos.isNotEmpty()) modelo.resolver()
+            }
+        }
+    }
+
+    fun onEvento(evento: EventoCalculadora) {
+        when (evento) {
+            is EventoCalculadora.AgregarEditarPunto -> agregarEditarPunto()
+            is EventoCalculadora.CambioPuntoSeleccionado -> cambioPuntoSeleccionado(evento.punto)
+            is EventoCalculadora.CambioX -> x = evento.x
+            is EventoCalculadora.CambioY -> y = evento.y
+            is EventoCalculadora.Cerrar -> {}
+            is EventoCalculadora.EliminarPunto -> eliminarPunto()
+            is EventoCalculadora.EliminarPuntos -> eliminarPuntos(evento.confirmado)
+            is EventoCalculadora.CambioMostrarPuntos -> mostrarPuntos = !mostrarPuntos
+        }
+    }
+
+    private fun agregarEditarPunto() {
         val xDouble = Formato.aDecimal(x)
         val yDouble = Formato.aDecimal(y)
 
@@ -44,7 +76,7 @@ class CalculadoraVM : ViewModel() {
             return
         }
 
-        puntos.find { punto -> punto.x == xDouble && punto.y == yDouble }?.let {
+        modelo.puntos.find { punto -> punto.x == xDouble && punto.y == yDouble }?.let {
             // el punto ya existe
             enviarEvento(EventoUI.Snackbar("Ya existe el punto $it."))
             return
@@ -62,36 +94,40 @@ class CalculadoraVM : ViewModel() {
         }
 
         // Nuevo punto
-        puntos.add(Punto(xDouble, yDouble))
+        modelo.puntos.add(Punto(xDouble, yDouble))
         limpiarXY()
         resolver()
     }
 
-    fun eliminarPunto() {
-        puntos.remove(puntoSeleccionado)
+    private fun eliminarPunto() {
+        modelo.puntos.remove(puntoSeleccionado)
         puntoSeleccionado = null
         limpiarXY()
         resolver()
     }
 
-    fun eliminarPuntos() {
-        enviarEvento(
-            EventoUI.Snackbar(
-                "Seguro quieres eliminar todos los puntos?",
-                "Eliminar"
+    private fun eliminarPuntos(confirmado: Boolean) {
+        if (!confirmado) {
+
+            // Pedir confirmación
+            enviarEvento(
+                EventoUI.Snackbar(
+                    "Seguro quieres eliminar todos los puntos?",
+                    "Eliminar"
+                )
             )
-        )
+            return
+        }
+
+        // Confirmado, eliminar puntos
+        modelo.puntos = mutableListOf()
+        puntoSeleccionado = null
+        limpiarXY()
+        resolver()
+
     }
 
-    fun cambioX(x: String) {
-        this.x = x
-    }
-
-    fun cambioY(y: String) {
-        this.y = y
-    }
-
-    fun cambioPuntoSeleccionado(punto: Punto?) {
+    private fun cambioPuntoSeleccionado(punto: Punto?) {
         puntoSeleccionado = punto
         punto?.let {
             x = Formato.decimal(it.x)
@@ -100,10 +136,6 @@ class CalculadoraVM : ViewModel() {
         }
 
         limpiarXY()
-    }
-
-    fun onDispose() {
-        ModeloAjuste.resetInstance()
     }
 
     private fun enviarEvento(evento: EventoUI) {
@@ -117,21 +149,14 @@ class CalculadoraVM : ViewModel() {
         y = ""
     }
 
-    fun eliminarPuntosConfirmado() {
-        puntos = mutableListOf()
-        puntoSeleccionado = null
-        limpiarXY()
-        resolver()
+    private fun resolver() {
+        //modelo.resolver()
+        guardarModelo()
     }
 
-    private fun resolver(){
-        modelo.puntos = puntos
-
-        modelo.resolver()
-    }
-
-    fun cambioModelo() {
-        modelo = ModeloAjuste.getInstance() //todo al hacer pop back stack al elegir funcion, no se guarda el tipo
-        modelo.puntos = puntos
+    private fun guardarModelo() {
+        viewModelScope.launch {
+            casosUso.insertarModelo(modelo)
+        }
     }
 }

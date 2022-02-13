@@ -8,23 +8,23 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.slavik.aproximadorfunciones.mmc.modelo.ModeloAjuste
-import com.slavik.aproximadorfunciones.mmc.modelo.Punto
-import com.slavik.aproximadorfunciones.mmc.modelo.funciones.Lineal
+import com.slavik.aproximadorfunciones.mmc.dominio.modelo.ModeloAjuste
+import com.slavik.aproximadorfunciones.mmc.dominio.modelo.Punto
+import com.slavik.aproximadorfunciones.mmc.dominio.modelo.funciones.Lineal
 import com.slavik.aproximadorfunciones.mmc.presentacion.theme.Azul1
 import java.util.*
 
 @Composable
 fun ItemHistorico(
-    modelo: ModeloAjuste
+    modelo: ModeloAjuste,
+    modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 24.dp),
+        modifier = modifier,
         shape = RoundedCornerShape(10.dp),
         elevation = 8.dp
     ) {
@@ -58,8 +58,10 @@ fun ItemHistorico(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = modelo.resumen(20),
-                        fontSize = 18.sp
+                        text = modelo.resumen(),
+                        fontSize = 18.sp,
+                        overflow = TextOverflow.Clip,
+                        maxLines = 1
                     )
                 }
 
@@ -69,7 +71,8 @@ fun ItemHistorico(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "${modelo.cantidadPuntos()} puntos"
+                        text = if (modelo.puntos.isNotEmpty()) "${modelo.puntos.size} puntos"
+                        else "Sin puntos."
                     )
                 }
             }
@@ -91,7 +94,7 @@ fun ItemHistorico(
 fun ItemHistoricoPreview() {
     ItemHistorico(
         modelo = ModeloAjuste(
-            mutableListOf(
+            puntos = mutableListOf(
                 Punto(1f, 4f),
                 Punto(5f, 8f),
                 Punto(7f, 14f),

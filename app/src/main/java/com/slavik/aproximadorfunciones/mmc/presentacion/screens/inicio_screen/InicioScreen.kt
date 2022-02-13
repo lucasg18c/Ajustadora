@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,8 +19,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.slavik.aproximadorfunciones.R
-import com.slavik.aproximadorfunciones.mmc.modelo.ModeloAjuste
+import com.slavik.aproximadorfunciones.mmc.dominio.modelo.ModeloAjuste
 import com.slavik.aproximadorfunciones.mmc.presentacion.componentes.TopBar
 import com.slavik.aproximadorfunciones.mmc.presentacion.navegacion.Destino
 import com.slavik.aproximadorfunciones.mmc.presentacion.theme.Naranja1
@@ -27,14 +29,19 @@ import com.slavik.aproximadorfunciones.mmc.util.Pruebas
 
 @Composable
 fun InicioScreen(
-    navegar: (Destino) -> Unit
+    navegar: (String) -> Unit,
+    vm: InicioVM = hiltViewModel()
 ) {
     val scaffoldState = rememberScaffoldState()
+
+    LaunchedEffect(key1 = true) {
+        //vm.limpiarModelos()
+    }
 
     InicioScreenContenido(
         { navegar(it) },
         scaffoldState = scaffoldState,
-        emptyList()
+        modelos = vm.modelos
     )
 }
 
@@ -51,7 +58,7 @@ fun InicioScreenPreview() {
 
 @Composable
 private fun InicioScreenContenido(
-    navegar: (Destino) -> Unit,
+    navegar: (String) -> Unit,
     scaffoldState: ScaffoldState,
     modelos: List<ModeloAjuste>,
 ) {
@@ -65,77 +72,95 @@ private fun InicioScreenContenido(
         }
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 32.dp),
+            modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(modifier = Modifier.height(40.dp))
-
-            Card(
+        ){
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable {
-                        navegar(Destino.Calculadora)
-                    },
-                backgroundColor = Naranja1,
-                shape = RoundedCornerShape(10.dp)
+                    .padding(horizontal = 32.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Row(
+                Spacer(modifier = Modifier.height(40.dp))
+
+                Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(
-                            vertical = 32.dp,
-                            horizontal = 16.dp
-                        ),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
+                        .clickable {
+                            navegar(Destino.Calculadora.ruta)
+                        },
+                    backgroundColor = Naranja1,
+                    shape = RoundedCornerShape(10.dp)
                 ) {
-                    Box(
-                        contentAlignment = Alignment.CenterStart
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                vertical = 32.dp,
+                                horizontal = 16.dp
+                            ),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
                     ) {
-                        Image(
-                            imageVector = ImageVector
-                                .vectorResource(
-                                    id = R.drawable.ic_logo_blanco
-                                ),
-                            contentDescription = "Logo",
-                            modifier = Modifier
-                                .width(70.dp)
-                                .height(70.dp),
-                            contentScale = ContentScale.FillBounds
+                        Box(
+                            contentAlignment = Alignment.CenterStart
+                        ) {
+                            Image(
+                                imageVector = ImageVector
+                                    .vectorResource(
+                                        id = R.drawable.ic_logo_blanco
+                                    ),
+                                contentDescription = "Logo",
+                                modifier = Modifier
+                                    .width(70.dp)
+                                    .height(70.dp),
+                                contentScale = ContentScale.FillBounds
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.width(16.dp))
+
+                        Text(
+                            text = "Ajustar Función",
+                            color = Color.White,
+                            fontSize = 26.sp
                         )
                     }
+                }
 
-                    Spacer(modifier = Modifier.width(16.dp))
-
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
                     Text(
-                        text = "Ajustar Función",
-                        color = Color.White,
-                        fontSize = 26.sp
+                        text = "Histórico",
+                        modifier = Modifier
+                            .padding(
+                                top = 24.dp
+                            ),
+                        fontSize = 24.sp
                     )
                 }
             }
-
-            Row(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = "Histórico",
-                    modifier = Modifier
-                        .padding(
-                            vertical = 24.dp
-                        ),
-                    fontSize = 24.sp
-                )
-            }
+            Spacer(modifier = Modifier.height(12.dp))
 
             if (modelos.isNotEmpty()) {
                 LazyColumn(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .fillMaxSize()
                 ) {
                     items(modelos) { modelo ->
-                        ItemHistorico(modelo)
+                        ItemHistorico(
+                            modelo,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    vertical = 6.dp,
+                                    horizontal = 32.dp
+                                )
+                                .clickable {
+                                    navegar(Destino.Calculadora.ruta + "?id=${modelo.mid}")
+                                }
+                        )
 
                         Spacer(modifier = Modifier.height(16.dp))
                     }

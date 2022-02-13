@@ -1,8 +1,8 @@
-package com.slavik.aproximadorfunciones.mmc.modelo.funciones
+package com.slavik.aproximadorfunciones.mmc.dominio.modelo.funciones
 
 import com.slavik.aproximadorfunciones.R
-import com.slavik.aproximadorfunciones.mmc.modelo.Punto
-import com.slavik.aproximadorfunciones.mmc.modelo.SEL
+import com.slavik.aproximadorfunciones.mmc.dominio.modelo.Punto
+import com.slavik.aproximadorfunciones.mmc.dominio.modelo.SEL
 import com.slavik.aproximadorfunciones.mmc.util.Formato
 import com.slavik.aproximadorfunciones.mmc.util.Formato.round
 

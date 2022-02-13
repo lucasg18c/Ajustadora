@@ -1,4 +1,4 @@
-package com.slavik.aproximadorfunciones.mmc.presentacion.screens.formas_screen
+package com.slavik.aproximadorfunciones.mmc.presentacion.screens.calculadora_screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -16,33 +16,30 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.slavik.aproximadorfunciones.R
-import com.slavik.aproximadorfunciones.mmc.modelo.funciones.*
+import com.slavik.aproximadorfunciones.mmc.dominio.modelo.funciones.*
 import com.slavik.aproximadorfunciones.mmc.presentacion.componentes.TopBar
 import com.slavik.aproximadorfunciones.mmc.util.EventoUI
-import kotlinx.coroutines.flow.collect
 
 @Composable
 fun FormasScreen(
-    volver: () -> Unit,
-    vm: FormasVM = viewModel()
+    volver: () -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
 
     LaunchedEffect(key1 = true) {
-        vm.evento.collect {
-            when (it) {
-                is EventoUI.Volver -> volver()
-                else -> Unit
-            }
-        }
+//        vm.evento.collect {
+//            when (it) {
+//                is EventoUI.Volver -> volver()
+//                else -> Unit
+//            }
+//        }
     }
 
     FormasScreenContenido(
         volver = volver,
         scaffoldState = scaffoldState,
-        vm::formaElegida
+        {}
     )
 
 }

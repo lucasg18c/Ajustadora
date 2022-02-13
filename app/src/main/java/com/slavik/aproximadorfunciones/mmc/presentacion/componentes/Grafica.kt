@@ -14,9 +14,9 @@ import com.jjoe64.graphview.GraphView
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
 import com.jjoe64.graphview.series.PointsGraphSeries
-import com.slavik.aproximadorfunciones.mmc.modelo.ModeloAjuste
-import com.slavik.aproximadorfunciones.mmc.modelo.Punto
-import com.slavik.aproximadorfunciones.mmc.modelo.funciones.Lineal
+import com.slavik.aproximadorfunciones.mmc.dominio.modelo.ModeloAjuste
+import com.slavik.aproximadorfunciones.mmc.dominio.modelo.Punto
+import com.slavik.aproximadorfunciones.mmc.dominio.modelo.funciones.Lineal
 import com.slavik.aproximadorfunciones.mmc.presentacion.theme.Azul1
 import com.slavik.aproximadorfunciones.mmc.presentacion.theme.Naranja1
 import java.util.*
@@ -153,7 +153,7 @@ fun GraficaPreview() {
                     Punto(3.0, 4.0),
                 ),
                 funcion = Lineal(),
-                Calendar.getInstance()
+                fecha = Calendar.getInstance()
             )
         )
     }

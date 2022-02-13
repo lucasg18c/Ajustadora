@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import com.slavik.aproximadorfunciones.mmc.dominio.modelo.ModeloAjuste
 import com.slavik.aproximadorfunciones.mmc.presentacion.navegacion.Destino
 
 @Composable
@@ -21,7 +22,8 @@ fun TopBar(
     titulo: String,
     mostrarConfiguraciones: Boolean = false,
     mostrarEditar: Boolean = false,
-    navegar : (Destino) -> Unit
+    modeloActual: ModeloAjuste? = null,
+    navegar : (String) -> Unit
 ) {
     TopAppBar(
         title = {
@@ -30,7 +32,7 @@ fun TopBar(
         actions = {
             if (mostrarEditar) {
                 IconButton(onClick = {
-                    navegar(Destino.EditarModelo)
+                    navegar(Destino.EditarModelo.ruta + "/${modeloActual!!.mid}")
                 }) {
                     Icon(
                         imageVector = Icons.Default.Edit,
@@ -41,7 +43,7 @@ fun TopBar(
 
             if (mostrarConfiguraciones) {
                 IconButton(onClick = {
-                    navegar(Destino.Configuracion)
+                    navegar(Destino.Configuracion.ruta)
                 }) {
                     Icon(
                         imageVector = Icons.Default.Settings,

@@ -1,4 +1,4 @@
-package com.slavik.aproximadorfunciones.mmc.modelo
+package com.slavik.aproximadorfunciones.mmc.dominio.modelo
 
 import kotlin.math.round
 
