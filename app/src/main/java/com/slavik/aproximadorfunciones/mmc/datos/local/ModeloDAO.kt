@@ -1,20 +1,20 @@
-package com.slavik.aproximadorfunciones.mmc.datos
+package com.slavik.aproximadorfunciones.mmc.datos.local
 
 import androidx.room.*
 import com.slavik.aproximadorfunciones.mmc.dominio.modelo.ModeloAjuste
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface ModeloAjusteDAO {
+interface ModeloDAO {
     @Query("" +
             "SELECT * " +
             "FROM modelos " +
             "WHERE ejeX != 'X' OR ejeY != 'Y' OR nombre != '' OR puntos != '[]'" +
             "ORDER BY fecha DESC")
-    fun buscar(): Flow<List<ModeloAjuste>>
+    suspend fun buscar(): List<ModeloAjuste>
 
     @Query("SELECT * FROM modelos WHERE mid = :id")
-    fun buscar(id: Int): Flow<ModeloAjuste>
+    fun buscar(id: Int): ModeloAjuste
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertar(modelo: ModeloAjuste)
@@ -24,7 +24,7 @@ interface ModeloAjusteDAO {
             "FROM modelos " +
             "WHERE mid = (" +
             "SELECT MAX(mid) FROM modelos)")
-    fun buscarUltimo(): Flow<ModeloAjuste>
+    fun buscarUltimo(): ModeloAjuste
 
     @Query("" +
             "DELETE FROM modelos " +

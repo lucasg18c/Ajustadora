@@ -25,7 +25,9 @@ import com.slavik.aproximadorfunciones.mmc.dominio.modelo.ModeloAjuste
 import com.slavik.aproximadorfunciones.mmc.presentacion.componentes.TopBar
 import com.slavik.aproximadorfunciones.mmc.presentacion.navegacion.Destino
 import com.slavik.aproximadorfunciones.mmc.presentacion.theme.Naranja1
+import com.slavik.aproximadorfunciones.mmc.util.EventoUI
 import com.slavik.aproximadorfunciones.mmc.util.Pruebas
+import kotlinx.coroutines.flow.collect
 
 @Composable
 fun InicioScreen(
@@ -35,13 +37,19 @@ fun InicioScreen(
     val scaffoldState = rememberScaffoldState()
 
     LaunchedEffect(key1 = true) {
-        //vm.limpiarModelos()
+        vm.evento.collect {
+            when (it) {
+                is EventoUI.Navegar -> navegar(it.destino.ruta)
+                else -> Unit
+            }
+        }
     }
 
     InicioScreenContenido(
         { navegar(it) },
         scaffoldState = scaffoldState,
-        modelos = vm.modelos
+        modelos = vm.modelos,
+        onEvento = vm::onEvento
     )
 }
 
@@ -51,7 +59,8 @@ fun InicioScreenPreview() {
     InicioScreenContenido(
         {},
         rememberScaffoldState(),
-        Pruebas.modelos
+        Pruebas.modelos,
+        {}
     )
 }
 
@@ -61,6 +70,7 @@ private fun InicioScreenContenido(
     navegar: (String) -> Unit,
     scaffoldState: ScaffoldState,
     modelos: List<ModeloAjuste>,
+    onEvento: (EventoInicio) -> Unit
 ) {
     Scaffold(
         scaffoldState = scaffoldState,
@@ -74,7 +84,7 @@ private fun InicioScreenContenido(
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
-        ){
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -87,7 +97,7 @@ private fun InicioScreenContenido(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                            navegar(Destino.Calculadora.ruta)
+                            onEvento(EventoInicio.AbrirModelo())
                         },
                     backgroundColor = Naranja1,
                     shape = RoundedCornerShape(10.dp)
@@ -158,7 +168,7 @@ private fun InicioScreenContenido(
                                     horizontal = 32.dp
                                 )
                                 .clickable {
-                                    navegar(Destino.Calculadora.ruta + "?id=${modelo.mid}")
+                                    onEvento(EventoInicio.AbrirModelo(modelo))
                                 }
                         )
 

@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.slavik.aproximadorfunciones.mmc.datos.repositorio.Repositorio
 import com.slavik.aproximadorfunciones.mmc.dominio.casos_uso.CasosUso
 import com.slavik.aproximadorfunciones.mmc.dominio.modelo.ModeloAjuste
 import com.slavik.aproximadorfunciones.mmc.util.EventoUI
@@ -18,31 +19,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditarVM @Inject constructor(
-    private val casosUso: CasosUso,
-    private val savedStateHandle: SavedStateHandle
+    repositorio: Repositorio
 ) : ViewModel() {
 
-    lateinit var modelo: ModeloAjuste
-    var x by mutableStateOf("")
-    var y by mutableStateOf("")
-    var nombre by mutableStateOf("")
+    var modelo: ModeloAjuste = repositorio.modeloActual
+    var x by mutableStateOf(modelo.ejeX)
+    var y by mutableStateOf(modelo.ejeY)
+    var nombre by mutableStateOf(modelo.nombre)
 
     private val _evento = Channel<EventoUI>()
     val evento = _evento.receiveAsFlow()
-
-    init {
-        viewModelScope.launch {
-            val id = savedStateHandle.get<Int>("id")!!
-
-            casosUso.buscarModelo(id).collect {
-                modelo = it
-
-                x = modelo.ejeX
-                y = modelo.ejeY
-                nombre = modelo.nombre
-            }
-        }
-    }
 
     fun onEvento(evento: EventoEditarModelo) {
         when (evento) {
@@ -60,7 +46,6 @@ class EditarVM @Inject constructor(
                     }
 
                     viewModelScope.launch {
-                        casosUso.insertarModelo(modelo)
                         _evento.send(EventoUI.Volver)
                     }
                 }

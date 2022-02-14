@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.slavik.aproximadorfunciones.mmc.datos.repositorio.Repositorio
 import com.slavik.aproximadorfunciones.mmc.dominio.casos_uso.CasosUso
 import com.slavik.aproximadorfunciones.mmc.dominio.modelo.ModeloAjuste
 import com.slavik.aproximadorfunciones.mmc.dominio.modelo.Punto
@@ -20,8 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CalculadoraVM @Inject constructor(
-    private val casosUso: CasosUso,
-    savedStateHandle: SavedStateHandle
+    private val repositorio: Repositorio
 ) : ViewModel() {
 
     private val _eventoUI = Channel<EventoUI>()
@@ -43,14 +43,16 @@ class CalculadoraVM @Inject constructor(
         private set
 
     init {
-        val id = savedStateHandle.get<Int>("id")!!
+//        val id = savedStateHandle.get<Int>("id")!!
+//
+//        viewModelScope.launch {
+//            casosUso.buscarModelo(id).collect {
+//                modelo = it
+//                if (modelo.puntos.isNotEmpty()) modelo.resolver()
+//            }
+//        }
 
-        viewModelScope.launch {
-            casosUso.buscarModelo(id).collect {
-                modelo = it
-                if (modelo.puntos.isNotEmpty()) modelo.resolver()
-            }
-        }
+        modelo = repositorio.modeloActual
     }
 
     fun onEvento(evento: EventoCalculadora) {
@@ -150,13 +152,13 @@ class CalculadoraVM @Inject constructor(
     }
 
     private fun resolver() {
-        //modelo.resolver()
-        guardarModelo()
+        modelo.resolver()
+        //guardarModelo()
     }
 
     private fun guardarModelo() {
-        viewModelScope.launch {
-            casosUso.insertarModelo(modelo)
-        }
+//        viewModelScope.launch {
+//            casosUso.insertarModelo(modelo)
+//        }
     }
 }

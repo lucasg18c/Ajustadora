@@ -2,9 +2,8 @@ package com.slavik.aproximadorfunciones.di
 
 import android.app.Application
 import androidx.room.Room
-import com.slavik.aproximadorfunciones.mmc.datos.AjustadoraDB
-import com.slavik.aproximadorfunciones.mmc.datos.IRepositorio
-import com.slavik.aproximadorfunciones.mmc.datos.Repositorio
+import com.slavik.aproximadorfunciones.mmc.datos.local.AjustadoraDB
+import com.slavik.aproximadorfunciones.mmc.datos.repositorio.Repositorio
 import com.slavik.aproximadorfunciones.mmc.datos.converter.FechaConverter
 import com.slavik.aproximadorfunciones.mmc.datos.converter.ListaPuntosConverter
 import com.slavik.aproximadorfunciones.mmc.dominio.casos_uso.CasosUso
@@ -33,7 +32,7 @@ class ModuloApp {
 
     @Provides
     @Singleton
-    fun provideRepositorio(db: AjustadoraDB) : IRepositorio {
+    fun provideRepositorio(db: AjustadoraDB) : Repositorio {
         return Repositorio(db)
     }
 

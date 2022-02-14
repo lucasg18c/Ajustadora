@@ -33,31 +33,17 @@ fun Navegacion(
         }
 
         composable(
-            route = Destino.Calculadora.ruta + "?id={id}",
-            arguments = listOf(
-                navArgument("id"){
-                    type = NavType.IntType
-                    defaultValue = -1
-                    nullable = false
-                }
-            )
+            route = Destino.Calculadora.ruta
         ) {
             CalculadoraScreen2(
                 navegar = { destino ->
-                    if (destino == null) navController.popBackStack()
-                    else navController.navigate(destino)
+                    navController.navigate(destino)
                 }
             )
         }
 
         composable(
-            route = Destino.EditarModelo.ruta + "/{id}",
-            arguments = listOf(
-                navArgument("id") {
-                    type = NavType.IntType
-                    defaultValue = -1
-                }
-            )
+            route = Destino.EditarModelo.ruta
         ) {
             EditarModeloScreen(
                 volver = {

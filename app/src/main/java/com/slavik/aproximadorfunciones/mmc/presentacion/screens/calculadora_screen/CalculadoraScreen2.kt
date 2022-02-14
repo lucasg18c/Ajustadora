@@ -2,7 +2,6 @@
 
 package com.slavik.aproximadorfunciones.mmc.presentacion.screens.calculadora_screen
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -32,7 +31,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.flowlayout.FlowRow
 import com.slavik.aproximadorfunciones.R
 import com.slavik.aproximadorfunciones.mmc.dominio.modelo.ModeloAjuste
@@ -47,14 +45,13 @@ import kotlinx.coroutines.flow.collect
 
 @Composable
 fun CalculadoraScreen2(
-    navegar: (String?) -> Unit,
+    navegar: (String) -> Unit,
     vm: CalculadoraVM = hiltViewModel()
 ) {
 
     val scaffoldState = rememberScaffoldState()
 
     LaunchedEffect(key1 = true) {
-        //vm.onEvento(EventoCalculadora.Iniciar(idModelo))
 
         vm.eventoUI.collect {
             when (it) {
@@ -72,11 +69,6 @@ fun CalculadoraScreen2(
                 else -> Unit
             }
         }
-    }
-
-    BackHandler{
-        vm.onEvento(EventoCalculadora.Cerrar)
-        navegar(null)
     }
 
     Contenido(
@@ -132,8 +124,7 @@ private fun Contenido(
                 titulo = modelo.nombre.ifBlank { "Modelo nuevo" },
                 navegar = navegar,
                 mostrarConfiguraciones = true,
-                mostrarEditar = true,
-                modeloActual = modelo
+                mostrarEditar = true
             )
         }
     ) {
@@ -406,7 +397,11 @@ private fun Contenido(
                                         Row {
                                             IconButton(
                                                 onClick = {
-                                                    onEvento(EventoCalculadora.CambioPuntoSeleccionado(null))
+                                                    onEvento(
+                                                        EventoCalculadora.CambioPuntoSeleccionado(
+                                                            null
+                                                        )
+                                                    )
                                                 },
                                                 modifier = Modifier
                                                     .size(40.dp)
@@ -468,7 +463,11 @@ private fun Contenido(
                                                 modelo.puntos.forEach { punto ->
                                                     TextButton(
                                                         onClick = {
-                                                            onEvento(EventoCalculadora.CambioPuntoSeleccionado(punto))
+                                                            onEvento(
+                                                                EventoCalculadora.CambioPuntoSeleccionado(
+                                                                    punto
+                                                                )
+                                                            )
                                                         },
                                                         colors = ButtonDefaults.textButtonColors(
                                                             contentColor = Azul2
@@ -512,7 +511,11 @@ private fun Contenido(
                                             if (mostrarPuntos) {
                                                 IconButton(
                                                     onClick = {
-                                                        onEvento(EventoCalculadora.EliminarPuntos(false))
+                                                        onEvento(
+                                                            EventoCalculadora.EliminarPuntos(
+                                                                false
+                                                            )
+                                                        )
                                                     }
                                                 ) {
                                                     Icon(

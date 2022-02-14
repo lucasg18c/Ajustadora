@@ -22,7 +22,6 @@ fun TopBar(
     titulo: String,
     mostrarConfiguraciones: Boolean = false,
     mostrarEditar: Boolean = false,
-    modeloActual: ModeloAjuste? = null,
     navegar : (String) -> Unit
 ) {
     TopAppBar(
@@ -32,7 +31,7 @@ fun TopBar(
         actions = {
             if (mostrarEditar) {
                 IconButton(onClick = {
-                    navegar(Destino.EditarModelo.ruta + "/${modeloActual!!.mid}")
+                    navegar(Destino.EditarModelo.ruta)
                 }) {
                     Icon(
                         imageVector = Icons.Default.Edit,

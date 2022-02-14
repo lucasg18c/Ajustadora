@@ -1,13 +1,10 @@
-package com.slavik.aproximadorfunciones.mmc.datos
+package com.slavik.aproximadorfunciones.mmc.datos.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.slavik.aproximadorfunciones.mmc.datos.converter.FechaConverter
 import com.slavik.aproximadorfunciones.mmc.datos.converter.ListaPuntosConverter
-import com.slavik.aproximadorfunciones.mmc.datos.entidades.FuncionEntity
-import com.slavik.aproximadorfunciones.mmc.datos.entidades.ModeloEntity
-import com.slavik.aproximadorfunciones.mmc.datos.entidades.PuntoEntity
 import com.slavik.aproximadorfunciones.mmc.dominio.modelo.ModeloAjuste
 
 @Database(
@@ -21,5 +18,5 @@ import com.slavik.aproximadorfunciones.mmc.dominio.modelo.ModeloAjuste
     FechaConverter::class,
 )
 abstract class AjustadoraDB : RoomDatabase() {
-    abstract fun modeloAjusteDAO() : ModeloAjusteDAO
+    abstract fun modeloDAO() : ModeloDAO
 }
