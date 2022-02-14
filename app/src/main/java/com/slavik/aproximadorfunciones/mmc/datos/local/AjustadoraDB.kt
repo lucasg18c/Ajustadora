@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.slavik.aproximadorfunciones.mmc.datos.converter.FechaConverter
 import com.slavik.aproximadorfunciones.mmc.datos.converter.ListaPuntosConverter
-import com.slavik.aproximadorfunciones.mmc.dominio.modelo.ModeloAjuste
+import com.slavik.aproximadorfunciones.mmc.modelo.ModeloAjuste
 
 @Database(
     entities = [

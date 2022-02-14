@@ -18,12 +18,6 @@ object Formato {
     }
 
     fun decimal(numero: Float) : String {
-//        val num = "%.2f".format(numero).split(".")
-//        var parteEntera = num[0]
-//        var parteDecimal = num[1]
-//
-//        if (parteDecimal == "")
-
         return DecimalFormat("#.##").format(numero)
     }
 

@@ -2,11 +2,10 @@ package com.slavik.aproximadorfunciones.di
 
 import android.app.Application
 import androidx.room.Room
-import com.slavik.aproximadorfunciones.mmc.datos.local.AjustadoraDB
-import com.slavik.aproximadorfunciones.mmc.datos.repositorio.Repositorio
 import com.slavik.aproximadorfunciones.mmc.datos.converter.FechaConverter
 import com.slavik.aproximadorfunciones.mmc.datos.converter.ListaPuntosConverter
-import com.slavik.aproximadorfunciones.mmc.dominio.casos_uso.CasosUso
+import com.slavik.aproximadorfunciones.mmc.datos.local.AjustadoraDB
+import com.slavik.aproximadorfunciones.mmc.datos.repositorio.Repositorio
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,7 +18,7 @@ class ModuloApp {
 
     @Provides
     @Singleton
-    fun provideDB(app: Application) : AjustadoraDB {
+    fun provideDB(app: Application): AjustadoraDB {
         return Room.databaseBuilder(
             app,
             AjustadoraDB::class.java,
@@ -32,13 +31,7 @@ class ModuloApp {
 
     @Provides
     @Singleton
-    fun provideRepositorio(db: AjustadoraDB) : Repositorio {
+    fun provideRepositorio(db: AjustadoraDB): Repositorio {
         return Repositorio(db)
-    }
-
-    @Provides
-    @Singleton
-    fun provideCasosUso(db: AjustadoraDB) : CasosUso {
-        return CasosUso(db)
     }
 }

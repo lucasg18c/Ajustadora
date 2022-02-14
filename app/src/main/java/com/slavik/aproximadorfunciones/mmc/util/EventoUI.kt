@@ -1,6 +1,6 @@
 package com.slavik.aproximadorfunciones.mmc.util
 
-import com.slavik.aproximadorfunciones.mmc.presentacion.navegacion.Destino
+import com.slavik.aproximadorfunciones.mmc.ui.navegacion.Destino
 
 sealed class EventoUI {
     data class Snackbar(val mensaje: String, val action: String? = null) : EventoUI()

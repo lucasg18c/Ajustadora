@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".mmc.presentacion.MainActivity"
+            android:name=".mmc.ui.activity.MainActivity"
             android:exported="true"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize">
@@ -24,13 +24,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".legacy.interfaz_legacy.SplashActivity"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".legacy.interfaz_legacy.MainActivity"
-            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

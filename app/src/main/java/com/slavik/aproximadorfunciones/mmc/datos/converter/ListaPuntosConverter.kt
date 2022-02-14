@@ -4,7 +4,7 @@ import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.slavik.aproximadorfunciones.mmc.dominio.modelo.Punto
+import com.slavik.aproximadorfunciones.mmc.modelo.Punto
 import java.lang.reflect.Type
 
 @ProvidedTypeConverter

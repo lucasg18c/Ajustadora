@@ -1,8 +1,7 @@
 package com.slavik.aproximadorfunciones.mmc.datos.repositorio
 
 import com.slavik.aproximadorfunciones.mmc.datos.local.AjustadoraDB
-import com.slavik.aproximadorfunciones.mmc.dominio.modelo.ModeloAjuste
-import kotlinx.coroutines.coroutineScope
+import com.slavik.aproximadorfunciones.mmc.modelo.ModeloAjuste
 import kotlinx.coroutines.runBlocking
 
 class Repositorio(

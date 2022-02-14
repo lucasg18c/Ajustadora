@@ -1,8 +1,8 @@
 package com.slavik.aproximadorfunciones.mmc.util
 
-import com.slavik.aproximadorfunciones.mmc.dominio.modelo.ModeloAjuste
-import com.slavik.aproximadorfunciones.mmc.dominio.modelo.Punto
-import com.slavik.aproximadorfunciones.mmc.dominio.modelo.funciones.Lineal
+import com.slavik.aproximadorfunciones.mmc.modelo.ModeloAjuste
+import com.slavik.aproximadorfunciones.mmc.modelo.Punto
+import com.slavik.aproximadorfunciones.mmc.modelo.funciones.Lineal
 import java.util.*
 
 object Pruebas {

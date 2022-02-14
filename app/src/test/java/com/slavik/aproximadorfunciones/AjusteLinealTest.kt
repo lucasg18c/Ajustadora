@@ -1,7 +1,7 @@
 package com.slavik.aproximadorfunciones
 
-import com.slavik.aproximadorfunciones.mmc.dominio.modelo.Punto
-import com.slavik.aproximadorfunciones.mmc.dominio.modelo.funciones.Lineal
+import com.slavik.aproximadorfunciones.mmc.modelo.Punto
+import com.slavik.aproximadorfunciones.mmc.modelo.funciones.Lineal
 import org.junit.Assert
 import org.junit.Test
 
